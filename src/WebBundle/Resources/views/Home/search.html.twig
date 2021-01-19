@@ -47,6 +47,7 @@
 				</div>
 			</div>
 			{% endif %}
+
 			{% if posters|length >  0 %}
 				<div class="col-sm-12 col-md-12 ">
 					<a class="title-more">
@@ -65,8 +66,27 @@
 						{{ knp_pagination_render(posters) }}
 					</div>
 				</div>
-		{% endif %}
-		{% if posters|length ==  0  and channels|length == 0  and actors|length == 0 %}
+			{% endif %}
+
+			{% if games|length != 0 %}
+				<div class="col-sm-12 col-md-12 ">
+					<a class="title-more">
+						<span>Games</span>
+					</a>
+				</div>
+				<div class="flix-carousel" >
+					<button  class="prev_btn"><i class="fa fa-chevron-left"></i></button>
+					<button  class="next_btn"><i class="fa fa-chevron-right"></i></button>
+					<div class="flix-scroll-x">
+						{% for game in games %}
+							<a class="channel" href="#" >
+								<img src="{{game.url}}"/>
+							</a>
+						{% endfor %}
+					</div>
+				</div>
+			{% endif %}
+		{% if posters|length ==  0  and channels|length == 0  and actors|length == 0 and games|length == 0%}
 		<div class="empty-box">
 			<img src="{{asset('web/img/empty.svg')}}">
 			<h3>Empty list</h3>

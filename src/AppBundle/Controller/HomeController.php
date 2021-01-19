@@ -464,8 +464,6 @@ class HomeController extends Controller
     } 
     public function indexAction(Request $request)
     {   
-
-
         $em=$this->getDoctrine()->getManager();
         $settings = $em->getRepository("AppBundle:Settings")->findOneBy(array());
         $support_count= $em->getRepository("AppBundle:Support")->count();

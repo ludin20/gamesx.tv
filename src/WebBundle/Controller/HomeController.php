@@ -159,6 +159,7 @@ class HomeController extends Controller
 
         $repository_channel = $em->getRepository('AppBundle:Channel');
         $repository_actor = $em->getRepository('AppBundle:Actor');
+        $repository_game = $em->getRepository('AppBundle:Game');
 
 
         $query_channel = $repository_channel->createQueryBuilder('c')
@@ -174,13 +175,22 @@ class HomeController extends Controller
             ->addOrderBy('c.name',"desc")
             ->addOrderBy('c.id', 'ASC')
             ->getQuery();
+
         $actors = $query_actor->getResult();
 
+        $query_game = $repository_game->createQueryBuilder('c')
+            ->where("c.title like '%" . $request->query->get("q") . "%'")
+            ->addOrderBy('c.created', 'desc')
+            ->addOrderBy('c.id', 'ASC')
+            ->getQuery();
 
-       return $this->render('WebBundle:Home:search.html.twig',array(
+        $games = $query_game->getResult();
+
+        return $this->render('WebBundle:Home:search.html.twig',array(
             "channels"=>$channels,
             "posters"=>$posters,
             "actors"=>$actors,
+            "games"=>$games,
             "episodes" =>array()
         ));
     }
@@ -222,7 +232,6 @@ class HomeController extends Controller
     }
     public function indexAction()
     {
-
         $em = $this->getDoctrine()->getManager();
         
         $settings = $em->getRepository("AppBundle:Settings")->findOneBy(array(), array());
