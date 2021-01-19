@@ -11,7 +11,7 @@
  Target Server Version : 100316
  File Encoding         : 65001
 
- Date: 19/01/2021 08:21:49
+ Date: 19/01/2021 10:06:03
 */
 
 SET NAMES utf8mb4;
@@ -253,7 +253,7 @@ CREATE TABLE `fos_user_table`  (
 -- ----------------------------
 -- Records of fos_user_table
 -- ----------------------------
-INSERT INTO `fos_user_table` VALUES (1, NULL, 'ADMIN', 'admin', 'ADMIN', 'admin', 1, 'djtfgbufxr4gwk4k0gss4sgs4k48wc4', '$2y$13$djtfgbufxr4gwk4k0gss4ekodAwfJ3IP01OyKvMD.stoxgr6MMa2S', '2021-01-18 23:04:19', 0, 0, NULL, NULL, 'a:1:{i:0;s:10:\"ROLE_ADMIN\";}', 0, 'Video Status', 'email', NULL, NULL);
+INSERT INTO `fos_user_table` VALUES (1, NULL, 'ADMIN', 'admin', 'ADMIN', 'admin', 1, 'djtfgbufxr4gwk4k0gss4sgs4k48wc4', '$2y$13$djtfgbufxr4gwk4k0gss4ekodAwfJ3IP01OyKvMD.stoxgr6MMa2S', '2021-01-19 08:27:04', 0, 0, NULL, NULL, 'a:1:{i:0;s:10:\"ROLE_ADMIN\";}', 0, 'Video Status', 'email', NULL, NULL);
 INSERT INTO `fos_user_table` VALUES (2, 4, 'Paul425@protonmail.com', 'paul425@protonmail.com', 'Paul425@protonmail.com', 'paul425@protonmail.com', 1, '8US.JCnRs8pXwTZSupzA6eb9owVyKM8mXB/VfAhebYg', '$2y$13$lyoUA19DwCUn8hlmh0lVG.HWCliyrgNRpdrH/.Ci8Lj4YHt2GqSky', '2021-01-15 19:31:12', 0, 0, NULL, NULL, 'a:0:{}', 0, 'Paul', 'email', NULL, 'dark');
 
 -- ----------------------------
@@ -279,14 +279,16 @@ CREATE TABLE `game_table`  (
   `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `position` int NOT NULL,
+  `created` datetime(0) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of game_table
 -- ----------------------------
-INSERT INTO `game_table` VALUES (2, 'Fortnite', 'https://static-cdn.jtvnw.net/ttv-boxart/Fortnite-500x500.jpg', 2);
-INSERT INTO `game_table` VALUES (3, 'Counter-Strike: Global Offensive', 'https://static-cdn.jtvnw.net/ttv-boxart/./Counter-Strike:%20Global%20Offensive-500x500.jpg', 3);
+INSERT INTO `game_table` VALUES (2, 'Fortnite', 'https://static-cdn.jtvnw.net/ttv-boxart/Fortnite-500x500.jpg', 2, '2021-01-06 09:38:37');
+INSERT INTO `game_table` VALUES (3, 'Counter-Strike: Global Offensive', 'https://static-cdn.jtvnw.net/ttv-boxart/./Counter-Strike:%20Global%20Offensive-500x500.jpg', 3, '2021-01-11 09:38:41');
+INSERT INTO `game_table` VALUES (4, 'Garena Free Fire', 'https://static-cdn.jtvnw.net/ttv-boxart/Garena%20Free%20Fire-500x500.jpg', 4, '2021-01-15 09:38:46');
 
 -- ----------------------------
 -- Table structure for genre_table
