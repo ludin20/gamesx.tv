@@ -21,17 +21,17 @@ class GameController extends Controller
     public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $games =   $em->getRepository("AppBundle:Game")->findBy(array(),array("position"=>"asc"));
+        $games = $em->getRepository("AppBundle:Game")->findBy(array(),array("position"=>"asc"));
 
         $q="( 1=1 )";
         if ($request->query->has("q") and $request->query->get("q")!="") {
-           $q.=" AND ( u.title like '%".$request->query->get("q")."%') ";
+           $q.= " AND ( u.title like '%".$request->query->get("q")."%') ";
         }
 
-        $dql        = "SELECT u FROM AppBundle:Game u  WHERE " .$q ." ";
-        $query      = $em->createQuery($dql);
+        $dql = "SELECT u FROM AppBundle:Game u  WHERE " .$q ." ";
+        $query = $em->createQuery($dql);
         
-        $paginator  = $this->get('knp_paginator');
+        $paginator = $this->get('knp_paginator');
 
 
         $pagination = $paginator->paginate(
@@ -140,7 +140,6 @@ class GameController extends Controller
             $url = 'https://api.twitch.tv/helix/games/top?';
             $first = 20;
 
-            var_dump($_SERVER['authorization']);
             $headers = array(
                 'Content-Type: application/json',
                 'Authorization: Bearer yyv0kg2yopv5x91lrwmyfttw0pmdk8',

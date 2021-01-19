@@ -22,7 +22,6 @@ class MovieController extends Controller
         $imagineCacheManager = $this->get('liip_imagine.cache.manager');
         $repository = $em->getRepository('AppBundle:Poster');
 
-
         $dir = "DESC";
         if($order == "title"){
             $dir="ASC";

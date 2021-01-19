@@ -50,7 +50,18 @@ class Game
      *
      * @ORM\Column(name="position", type="integer")
      */
+
+    /**
+     * 
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created", type="datetime")
+     */
+    private $created;
+
     private $position;
+
+
 
     public function __construct()
     {
@@ -130,6 +141,29 @@ class Game
     public function getUrl()
     {
         return $this->url;
+    }
+
+    /**
+     * Set created
+     *
+     * @param \DateTime $created
+     * @return Wallpaper
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    /**
+     * Get created
+     *
+     * @return \DateTime 
+     */
+    public function getCreated()
+    {
+        return $this->created;
     }
 
     public function __toString()
