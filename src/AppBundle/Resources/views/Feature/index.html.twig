@@ -1,0 +1,60 @@
+{% extends "AppBundle::layout.html.twig" %}
+{% block body%}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="row">
+					<div class="col-md-4">
+						<a href="{{path("app_feature_index")}}" class="btn  btn-lg btn-warning btn-block"><i class="material-icons" style="font-size: 30px;">refresh</i> Refresh</a>
+					</div>
+					<div class="col-md-4">
+						<a class="btn btn btn-lg btn-yellow btn-block"><i class="material-icons" style="font-size: 30px;">mood</i> {{features|length}} Features Being Tracked</a>
+					</div>
+					<div class="col-md-4">
+						<a href="{{path("app_feature_add")}}" class="btn btn-rose btn-lg pull-right add-button btn-block" title=""><i class="material-icons" style="font-size: 30px;">add_box</i> ADD FEATURE </a>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<form>
+							<input name="q" value="{{app.request.query.get("q")}}" type="text" class="search-input" placeholder="search">
+							<button class="btn btn-sm search-btn"><i class="material-icons" style="font-size: 30px;">search</i></button>
+						</form>
+					</div>
+				</div>
+				<div class="row">
+					{% for feature in pagination %}
+
+						<div class="col-md-4">
+							<div class="card">
+								<div class="card-content" style="text-align: center;height: 209px;padding: 0px;background: black;border-top-left-radius: 2px;border-top-right-radius: 2px; background-image: url({{feature.url}}); background-repeat: no-repeat; background-size: 100%">
+									<span class="label-lang">{{feature.name}}</span>
+								</div>
+								<div class="card-footer" style="text-align: center;">
+									<a href="{{path("app_feature_delete",{"id":feature.id})}}" rel="tooltip" data-placement="left" class=" btn btn-danger btn-xs btn-round" data-original-title="Delete">
+										<i class="material-icons">delete</i>
+									</a>
+								</div>
+							</div>
+						</div>
+					{% else %}
+						<div class="col-md-12">
+							<div class="card">
+								<div class="card-content">
+									<br>
+									<br>
+									<center><img src="{{asset("img/bg_empty.png")}}"  style="width: auto !important;" =""></center>
+									<br>
+									<br>
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+				<div class=" pull-right">
+					{{ knp_pagination_render(pagination) }}
+				</div>
+			</div>
+		</div>
+		
+	{% endblock%}
