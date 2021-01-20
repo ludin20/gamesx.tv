@@ -68,6 +68,13 @@ class Feature
     private $position;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="viewer_count", type="integer")
+     */
+    private $viewer_count;
+
+    /**
      * @var string
      * @Assert\NotBlank()
      * @Assert\Length(
@@ -137,6 +144,30 @@ class Feature
     {
         return $this->position;
     }
+
+    /**
+     * Set viewer_count
+     *
+     * @param integer $viewer_count
+     * @return Feature
+     */
+    public function setViewerCount($viewer_count)
+    {
+        $this->viewer_count = $viewer_count;
+        
+        return $this;
+    }
+
+    /**
+     * Get viewer_count
+     *
+     * @return integer 
+     */
+    public function getViewerCount()
+    {
+        return $this->viewer_count;
+    }
+
 
     /**
      * Set url

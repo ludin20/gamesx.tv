@@ -81,7 +81,7 @@
                             {% for feature in feature_list %}
                                 <tr>
                                     <th style="width: 2%">
-                                        <input type="checkbox" name="featureids[]" id="{{feature.id}}" value="{{loop.index}}">
+                                        <input type="checkbox" name="featureids[]" id="{{feature.id}},{{feature.video_url}}" value="{{loop.index}}">
                                     </th>
                                     <th style="width: 2%">
                                         #{{loop.index}}
@@ -117,18 +117,38 @@
         var data = [];
         $("table :checkbox").change(function(e){
             if ($(this).is(":checked")) {
-                var id = $(this)[0].id;
-                data.push(id);
-            } else {
-                var id = $(this)[0].id;
+                var val = $(this)[0].id;
+                var value = $(this)[0].value;
+                var arr = val.split(",");
+                var id = arr[0];
+                var video_url = arr[1];
 
-                var index = data.indexOf(id);
-                if (index > -1) {
-                    data.splice(index, 1);
+                var json = {
+                    "value": value,
+                    "id": id,
+                    "video_url": video_url,
+                };
+                data.push(json);
+            } else {
+                var index = $(this)[0].value;
+
+                for (var i = 0; i < data.length; i ++) {
+                    if (data[i].value == index) {
+                        data.splice(i, 1);       
+                    }
                 }
             }
-            console.log(data.toString());
-            feature_name.val(data.toString());
+            var str = '';
+            for (var i = 0; i < data.length; i ++) {
+                if (i == data.length - 1) {
+                    str += JSON.stringify(data[i])    
+                } else {
+                    str += JSON.stringify(data[i]) + ",";   
+                }
+            }
+            str = '[' + str + ']';
+            console.log(str);
+            feature_name.val(str);
         });
     });
 </script>

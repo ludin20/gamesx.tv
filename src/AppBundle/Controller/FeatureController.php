@@ -60,10 +60,11 @@ class FeatureController extends Controller
                 return $this->redirect($this->generateUrl('app_feature_add'));
             } else {
                 $dataStr = $feature->getName();
-                $dataArr = explode(",", $dataStr);
+                $dataArr = json_decode($dataStr, true);
+
                 for ($i = 0; $i < count($dataArr); $i ++) {
                     $temp_feature= new Feature();
-                    $each_feature = $this->getUserById($dataArr[$i]);
+                    $each_feature = $this->getUserById($dataArr[$i]["id"]);
                     $max=0;
                     $features=$em->getRepository('AppBundle:Feature')->findAll();
                     foreach ($features as $key => $value) {
@@ -75,6 +76,8 @@ class FeatureController extends Controller
                     $temp_feature->setPosition($max+1);
                     $temp_feature->setName($each_feature[0]->display_name);
                     $temp_feature->setUrl($each_feature[0]->profile_image_url);
+                    $temp_feature->setViewerCount($each_feature[0]->view_count);
+                    $temp_feature->setVideoUrl($dataArr[$i]["video_url"]);
 
                     $em->persist($temp_feature);
                     $em->flush();
@@ -121,7 +124,9 @@ class FeatureController extends Controller
             if ($q != null || $q != "")  {
                 for ($j = 0; $j < count($stream_list); $j ++) {
                     $feature = $this->getUserById($stream_list[$j]->user_id);
-                    // $video = $this->getVideoByGameId($stream_list[$j]->game_id);
+                    $video = $this->getVideoByUserId($stream_list[$j]->user_id);
+
+                    $feature[0]->video_url = $video->url;
 
                     if ($feature[0]->id == $q) {
                         $feature_list[] = $feature[0];
@@ -130,7 +135,9 @@ class FeatureController extends Controller
             } else {
                 for ($j = 0; $j < count($stream_list); $j ++) {
                     $feature = $this->getUserById($stream_list[$j]->user_id);
-                    // $video = $this->getVideoByGameId($stream_list[$j]->game_id);
+                    $video = $this->getVideoByUserId($stream_list[$j]->user_id);
+
+                    $feature[0]->video_url = $video->url;
                     
                     $feature_list[] = $feature[0];
                 }
@@ -170,7 +177,7 @@ class FeatureController extends Controller
         return $user;
     }
 
-    private function getVideoByGameId($id) {
+    private function getVideoByUserId($id) {
         $url = 'https://api.twitch.tv/helix/videos?';
         $headers = array(
             'Content-Type: application/json',
@@ -179,7 +186,7 @@ class FeatureController extends Controller
         );
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url.'game_id='.$id.'&sort=views');
+        curl_setopt($ch, CURLOPT_URL, $url.'user_id='.$id.'&sort=views');
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_HEADER, 0);
         $body = '{}';
