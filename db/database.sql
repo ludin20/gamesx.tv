@@ -11,7 +11,7 @@
  Target Server Version : 100316
  File Encoding         : 65001
 
- Date: 20/01/2021 17:19:58
+ Date: 20/01/2021 19:51:41
 */
 
 SET NAMES utf8mb4;
@@ -230,14 +230,15 @@ CREATE TABLE `feature_table`  (
   `video_url` varchar(3000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `position` int NULL DEFAULT NULL,
   `created` datetime(0) NULL DEFAULT NULL,
+  `viewer_count` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of feature_table
 -- ----------------------------
-INSERT INTO `feature_table` VALUES (2, 'AdinRoss', 'https://static-cdn.jtvnw.net/jtv_user_pictures/10c197cb-295f-4d40-8a6c-26a0a5da22ee-profile_image-300x300.png', NULL, 2, '2021-01-20 09:21:20');
-INSERT INTO `feature_table` VALUES (3, 'mrstiventc', 'https://static-cdn.jtvnw.net/jtv_user_pictures/f2ffe190-8a7d-4ceb-aa12-1f1afe2f1f76-profile_image-300x300.png', NULL, 3, '2021-01-20 09:21:23');
+INSERT INTO `feature_table` VALUES (1, 'BLASTPremier', 'https://static-cdn.jtvnw.net/jtv_user_pictures/d4c6f373-44b7-4e3a-a3d5-90cabbf1859d-profile_image-300x300.png', 'https://www.twitch.tv/videos/836029159', 1, '2021-01-20 17:33:26', 53747112);
+INSERT INTO `feature_table` VALUES (2, 'winstrike_tv', 'https://static-cdn.jtvnw.net/jtv_user_pictures/14d1385a-0998-4a75-83e0-92b9e5113605-profile_image-300x300.png', 'https://www.twitch.tv/videos/829994480', 2, '2021-01-20 17:33:29', 17492690);
 
 -- ----------------------------
 -- Table structure for fos_user_table
@@ -275,7 +276,7 @@ CREATE TABLE `fos_user_table`  (
 -- ----------------------------
 -- Records of fos_user_table
 -- ----------------------------
-INSERT INTO `fos_user_table` VALUES (1, NULL, 'ADMIN', 'admin', 'ADMIN', 'admin', 1, 'djtfgbufxr4gwk4k0gss4sgs4k48wc4', '$2y$13$djtfgbufxr4gwk4k0gss4ekodAwfJ3IP01OyKvMD.stoxgr6MMa2S', '2021-01-20 15:33:27', 0, 0, NULL, NULL, 'a:1:{i:0;s:10:\"ROLE_ADMIN\";}', 0, 'Video Status', 'email', NULL, NULL);
+INSERT INTO `fos_user_table` VALUES (1, NULL, 'ADMIN', 'admin', 'ADMIN', 'admin', 1, 'djtfgbufxr4gwk4k0gss4sgs4k48wc4', '$2y$13$djtfgbufxr4gwk4k0gss4ekodAwfJ3IP01OyKvMD.stoxgr6MMa2S', '2021-01-20 17:21:55', 0, 0, NULL, NULL, 'a:1:{i:0;s:10:\"ROLE_ADMIN\";}', 0, 'Video Status', 'email', NULL, NULL);
 INSERT INTO `fos_user_table` VALUES (2, 4, 'Paul425@protonmail.com', 'paul425@protonmail.com', 'Paul425@protonmail.com', 'paul425@protonmail.com', 1, '8US.JCnRs8pXwTZSupzA6eb9owVyKM8mXB/VfAhebYg', '$2y$13$lyoUA19DwCUn8hlmh0lVG.HWCliyrgNRpdrH/.Ci8Lj4YHt2GqSky', '2021-01-15 19:31:12', 0, 0, NULL, NULL, 'a:0:{}', 0, 'Paul', 'email', NULL, 'dark');
 
 -- ----------------------------
@@ -307,14 +308,13 @@ CREATE TABLE `game_table`  (
   `language` varchar(3000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `video_url` varchar(3000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of game_table
 -- ----------------------------
-INSERT INTO `game_table` VALUES (1, 'Call of Duty: Warzone', 'https://static-cdn.jtvnw.net/ttv-boxart/./Call%20of%20Duty:%20Warzone-500x500.jpg', 1, '2021-01-20 06:57:58', 22773, 'Use Code \"SWAGG\" in the Store | FaZe Swagg | !BLM !sub', 'en', 'https://www.twitch.tv/videos/814230487');
-INSERT INTO `game_table` VALUES (2, 'VRChat', 'https://static-cdn.jtvnw.net/ttv-boxart/VRChat-500x500.jpg', 2, '2021-01-20 06:58:01', 26166, 'My dad has a date in VR | www.sodapoppin.shop Discount code: POOR', 'en', 'https://www.twitch.tv/videos/876339259');
-INSERT INTO `game_table` VALUES (3, 'Grand Theft Auto V', 'https://static-cdn.jtvnw.net/ttv-boxart/Grand%20Theft%20Auto%20V-500x500.jpg', 3, '2021-01-20 06:58:04', 29066, 'GRIZZ RP !sub !prime', 'en', 'https://www.twitch.tv/videos/30511676');
+INSERT INTO `game_table` VALUES (1, 'Call of Duty: Warzone', 'https://static-cdn.jtvnw.net/ttv-boxart/./Call%20of%20Duty:%20Warzone-500x500.jpg', 1, '2021-01-20 17:24:25', 22621, 'HIGH KILL WINS [1470+ Wins] | @Symfuhny On All Socials | !Socials !Code !vid !loadout', 'en', 'https://www.twitch.tv/videos/814230487');
+INSERT INTO `game_table` VALUES (2, 'Rust', 'https://static-cdn.jtvnw.net/ttv-boxart/Rust-500x500.jpg', 2, '2021-01-20 17:24:27', 21821, 'EGOLAND SE VIENE?', 'es', 'https://www.twitch.tv/videos/860026261');
 
 -- ----------------------------
 -- Table structure for genre_table
@@ -387,14 +387,16 @@ CREATE TABLE `livechannel_table`  (
   `url` varchar(3000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `video_url` varchar(3000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `created` datetime(0) NULL DEFAULT NULL,
+  `viewer_count` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of livechannel_table
 -- ----------------------------
-INSERT INTO `livechannel_table` VALUES (2, 'aba4647', 'd', 2, 'https://static-cdn.jtvnw.net/jtv_user_pictures/8af6dd39-4804-49f1-b618-4316cf861465-profile_banner-480.jpeg', 'https://www.twitch.tv/aba4647', '2021-01-20 16:15:02');
-INSERT INTO `livechannel_table` VALUES (3, 'symfuhny', 'Hi nice to meet u', 3, 'https://static-cdn.jtvnw.net/jtv_user_pictures/ec298e23-b9d9-4e8c-b935-0b600077c268-profile_banner-480.jpg', 'https://www.twitch.tv/symfuhny', '2021-01-20 16:15:04');
+INSERT INTO `livechannel_table` VALUES (1, 'nmplol', 'business email -nmplol@getader.com', 1, 'https://static-cdn.jtvnw.net/jtv_user_pictures/dd89681f-fe01-4a66-8e52-6e185729a564-profile_banner-480.jpeg', 'https://www.twitch.tv/nmplol', '2021-01-20 17:35:01', 27679569);
+INSERT INTO `livechannel_table` VALUES (2, 'roshtein', '\"A Casino-philosopher with an incredible technique\" is what describes Roshtein. --- Welcome to a journey where you will witness extraordinary combats, great choreography & brutal laughs. Roshtein & the TROOPS have shared this journey since 2016, when he first went live. So, sit back, relax & enjoy.', 2, 'https://static-cdn.jtvnw.net/jtv_user_pictures/00b28a1a-825d-4ac1-949f-22bc32235338-profile_banner-480.png', 'https://www.twitch.tv/roshtein', '2021-01-20 17:35:04', 40392841);
+INSERT INTO `livechannel_table` VALUES (3, 'hiko', 'My name is Spencer \"Hiko\" Martin, pro VALORANT player for 100Thieves. Ex CSGO pro for teams Complexity, Cloud9, Liquid. Business email: Business@Hiko.gg', 3, 'https://static-cdn.jtvnw.net/jtv_user_pictures/ceb7c9db-5041-443c-9098-581cfe3c61b7-profile_banner-480.png', 'https://www.twitch.tv/hiko', '2021-01-20 17:35:07', 41321907);
 
 -- ----------------------------
 -- Table structure for media_table
