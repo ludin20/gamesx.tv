@@ -11,7 +11,7 @@
  Target Server Version : 100316
  File Encoding         : 65001
 
- Date: 20/01/2021 16:44:59
+ Date: 20/01/2021 17:19:58
 */
 
 SET NAMES utf8mb4;
@@ -225,9 +225,9 @@ CREATE TABLE `episode_table`  (
 DROP TABLE IF EXISTS `feature_table`;
 CREATE TABLE `feature_table`  (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
-  `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
-  `video_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `name` varchar(3000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `url` varchar(3000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `video_url` varchar(3000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `position` int NULL DEFAULT NULL,
   `created` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
@@ -298,14 +298,14 @@ CREATE TABLE `gallery_table`  (
 DROP TABLE IF EXISTS `game_table`;
 CREATE TABLE `game_table`  (
   `id` int NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `title` varchar(3000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `position` int NOT NULL,
   `created` datetime(0) NULL DEFAULT NULL,
   `viewer_count` int NOT NULL,
-  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
-  `language` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
-  `video_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `description` varchar(3000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `language` varchar(3000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `video_url` varchar(3000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
@@ -381,21 +381,20 @@ CREATE TABLE `language_table`  (
 DROP TABLE IF EXISTS `livechannel_table`;
 CREATE TABLE `livechannel_table`  (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
-  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `name` varchar(3000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `description` varchar(3000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `position` int NULL DEFAULT NULL,
-  `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
-  `video_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `url` varchar(3000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `video_url` varchar(3000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `created` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of livechannel_table
 -- ----------------------------
-INSERT INTO `livechannel_table` VALUES (4, 'yoda', 'ACHE O N - FOMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM', 2, 'https://static-cdn.jtvnw.net/jtv_user_pictures/1e5bddcc-5b39-48a7-aa42-b945fd58a6e8-profile_banner-480.png', 'https://www.twitch.tv/yoda', '2021-01-20 15:21:57');
-INSERT INTO `livechannel_table` VALUES (6, 'spygea', '楽しんでゲームしていきます', 3, 'https://static-cdn.jtvnw.net/jtv_user_pictures/add23377-6e8e-47db-9417-e449aedf2e55-profile_banner-480.png', 'https://www.twitch.tv/spygea', '2021-01-20 15:22:03');
-INSERT INTO `livechannel_table` VALUES (7, 'mckytv', 'Streamzeiten: spontan | streamfreie Tage: spontan ', 4, 'https://static-cdn.jtvnw.net/jtv_user_pictures/62c632fa-9144-4932-9e6b-b254476a8cf7-profile_banner-480.jpeg', 'https://www.twitch.tv/mckytv', '2021-01-20 15:22:05');
+INSERT INTO `livechannel_table` VALUES (2, 'aba4647', 'd', 2, 'https://static-cdn.jtvnw.net/jtv_user_pictures/8af6dd39-4804-49f1-b618-4316cf861465-profile_banner-480.jpeg', 'https://www.twitch.tv/aba4647', '2021-01-20 16:15:02');
+INSERT INTO `livechannel_table` VALUES (3, 'symfuhny', 'Hi nice to meet u', 3, 'https://static-cdn.jtvnw.net/jtv_user_pictures/ec298e23-b9d9-4e8c-b935-0b600077c268-profile_banner-480.jpg', 'https://www.twitch.tv/symfuhny', '2021-01-20 16:15:04');
 
 -- ----------------------------
 -- Table structure for media_table
