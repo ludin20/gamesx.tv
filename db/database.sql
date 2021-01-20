@@ -11,7 +11,7 @@
  Target Server Version : 100316
  File Encoding         : 65001
 
- Date: 19/01/2021 10:06:03
+ Date: 20/01/2021 16:44:59
 */
 
 SET NAMES utf8mb4;
@@ -34,11 +34,12 @@ CREATE TABLE `actor_table`  (
   UNIQUE INDEX `UNIQ_D2AD64D2989D9B62`(`slug`) USING BTREE,
   INDEX `IDX_D2AD64D2EA9FDD75`(`media_id`) USING BTREE,
   CONSTRAINT `FK_D2AD64D2EA9FDD75` FOREIGN KEY (`media_id`) REFERENCES `media_table` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of actor_table
 -- ----------------------------
+INSERT INTO `actor_table` VALUES (1, 6, 'Vlad', '111', '111', 'Actor', '111', 'vlad');
 
 -- ----------------------------
 -- Table structure for category_table
@@ -85,11 +86,12 @@ CREATE TABLE `channel_table`  (
   UNIQUE INDEX `UNIQ_410887DE989D9B62`(`slug`) USING BTREE,
   INDEX `IDX_410887DEEA9FDD75`(`media_id`) USING BTREE,
   CONSTRAINT `FK_410887DEEA9FDD75` FOREIGN KEY (`media_id`) REFERENCES `media_table` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of channel_table
 -- ----------------------------
+INSERT INTO `channel_table` VALUES (1, 7, 'Game Channel', 'This is Game TV Channel', NULL, 0, NULL, NULL, 0, 0, '2021-01-19 09:29:17', 1, 1, '1', 1, 'game-channel', 'Game Channel', 'Game Channel');
 
 -- ----------------------------
 -- Table structure for channels_categories
@@ -218,6 +220,26 @@ CREATE TABLE `episode_table`  (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for feature_table
+-- ----------------------------
+DROP TABLE IF EXISTS `feature_table`;
+CREATE TABLE `feature_table`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `video_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `position` int NULL DEFAULT NULL,
+  `created` datetime(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of feature_table
+-- ----------------------------
+INSERT INTO `feature_table` VALUES (2, 'AdinRoss', 'https://static-cdn.jtvnw.net/jtv_user_pictures/10c197cb-295f-4d40-8a6c-26a0a5da22ee-profile_image-300x300.png', NULL, 2, '2021-01-20 09:21:20');
+INSERT INTO `feature_table` VALUES (3, 'mrstiventc', 'https://static-cdn.jtvnw.net/jtv_user_pictures/f2ffe190-8a7d-4ceb-aa12-1f1afe2f1f76-profile_image-300x300.png', NULL, 3, '2021-01-20 09:21:23');
+
+-- ----------------------------
 -- Table structure for fos_user_table
 -- ----------------------------
 DROP TABLE IF EXISTS `fos_user_table`;
@@ -253,7 +275,7 @@ CREATE TABLE `fos_user_table`  (
 -- ----------------------------
 -- Records of fos_user_table
 -- ----------------------------
-INSERT INTO `fos_user_table` VALUES (1, NULL, 'ADMIN', 'admin', 'ADMIN', 'admin', 1, 'djtfgbufxr4gwk4k0gss4sgs4k48wc4', '$2y$13$djtfgbufxr4gwk4k0gss4ekodAwfJ3IP01OyKvMD.stoxgr6MMa2S', '2021-01-19 08:27:04', 0, 0, NULL, NULL, 'a:1:{i:0;s:10:\"ROLE_ADMIN\";}', 0, 'Video Status', 'email', NULL, NULL);
+INSERT INTO `fos_user_table` VALUES (1, NULL, 'ADMIN', 'admin', 'ADMIN', 'admin', 1, 'djtfgbufxr4gwk4k0gss4sgs4k48wc4', '$2y$13$djtfgbufxr4gwk4k0gss4ekodAwfJ3IP01OyKvMD.stoxgr6MMa2S', '2021-01-20 15:33:27', 0, 0, NULL, NULL, 'a:1:{i:0;s:10:\"ROLE_ADMIN\";}', 0, 'Video Status', 'email', NULL, NULL);
 INSERT INTO `fos_user_table` VALUES (2, 4, 'Paul425@protonmail.com', 'paul425@protonmail.com', 'Paul425@protonmail.com', 'paul425@protonmail.com', 1, '8US.JCnRs8pXwTZSupzA6eb9owVyKM8mXB/VfAhebYg', '$2y$13$lyoUA19DwCUn8hlmh0lVG.HWCliyrgNRpdrH/.Ci8Lj4YHt2GqSky', '2021-01-15 19:31:12', 0, 0, NULL, NULL, 'a:0:{}', 0, 'Paul', 'email', NULL, 'dark');
 
 -- ----------------------------
@@ -279,16 +301,20 @@ CREATE TABLE `game_table`  (
   `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `position` int NOT NULL,
-  `created` datetime(0) NOT NULL,
+  `created` datetime(0) NULL DEFAULT NULL,
+  `viewer_count` int NOT NULL,
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `language` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `video_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of game_table
 -- ----------------------------
-INSERT INTO `game_table` VALUES (2, 'Fortnite', 'https://static-cdn.jtvnw.net/ttv-boxart/Fortnite-500x500.jpg', 2, '2021-01-06 09:38:37');
-INSERT INTO `game_table` VALUES (3, 'Counter-Strike: Global Offensive', 'https://static-cdn.jtvnw.net/ttv-boxart/./Counter-Strike:%20Global%20Offensive-500x500.jpg', 3, '2021-01-11 09:38:41');
-INSERT INTO `game_table` VALUES (4, 'Garena Free Fire', 'https://static-cdn.jtvnw.net/ttv-boxart/Garena%20Free%20Fire-500x500.jpg', 4, '2021-01-15 09:38:46');
+INSERT INTO `game_table` VALUES (1, 'Call of Duty: Warzone', 'https://static-cdn.jtvnw.net/ttv-boxart/./Call%20of%20Duty:%20Warzone-500x500.jpg', 1, '2021-01-20 06:57:58', 22773, 'Use Code \"SWAGG\" in the Store | FaZe Swagg | !BLM !sub', 'en', 'https://www.twitch.tv/videos/814230487');
+INSERT INTO `game_table` VALUES (2, 'VRChat', 'https://static-cdn.jtvnw.net/ttv-boxart/VRChat-500x500.jpg', 2, '2021-01-20 06:58:01', 26166, 'My dad has a date in VR | www.sodapoppin.shop Discount code: POOR', 'en', 'https://www.twitch.tv/videos/876339259');
+INSERT INTO `game_table` VALUES (3, 'Grand Theft Auto V', 'https://static-cdn.jtvnw.net/ttv-boxart/Grand%20Theft%20Auto%20V-500x500.jpg', 3, '2021-01-20 06:58:04', 29066, 'GRIZZ RP !sub !prime', 'en', 'https://www.twitch.tv/videos/30511676');
 
 -- ----------------------------
 -- Table structure for genre_table
@@ -350,6 +376,28 @@ CREATE TABLE `language_table`  (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for livechannel_table
+-- ----------------------------
+DROP TABLE IF EXISTS `livechannel_table`;
+CREATE TABLE `livechannel_table`  (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `position` int NULL DEFAULT NULL,
+  `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `video_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `created` datetime(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of livechannel_table
+-- ----------------------------
+INSERT INTO `livechannel_table` VALUES (4, 'yoda', 'ACHE O N - FOMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM', 2, 'https://static-cdn.jtvnw.net/jtv_user_pictures/1e5bddcc-5b39-48a7-aa42-b945fd58a6e8-profile_banner-480.png', 'https://www.twitch.tv/yoda', '2021-01-20 15:21:57');
+INSERT INTO `livechannel_table` VALUES (6, 'spygea', '楽しんでゲームしていきます', 3, 'https://static-cdn.jtvnw.net/jtv_user_pictures/add23377-6e8e-47db-9417-e449aedf2e55-profile_banner-480.png', 'https://www.twitch.tv/spygea', '2021-01-20 15:22:03');
+INSERT INTO `livechannel_table` VALUES (7, 'mckytv', 'Streamzeiten: spontan | streamfreie Tage: spontan ', 4, 'https://static-cdn.jtvnw.net/jtv_user_pictures/62c632fa-9144-4932-9e6b-b254476a8cf7-profile_banner-480.jpeg', 'https://www.twitch.tv/mckytv', '2021-01-20 15:22:05');
+
+-- ----------------------------
 -- Table structure for media_table
 -- ----------------------------
 DROP TABLE IF EXISTS `media_table`;
@@ -362,7 +410,7 @@ CREATE TABLE `media_table`  (
   `date` datetime(0) NOT NULL,
   `enabled` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of media_table
@@ -370,6 +418,8 @@ CREATE TABLE `media_table`  (
 INSERT INTO `media_table` VALUES (1, 'logo.png', 'logo.png', 'image/png', 'png', '2019-11-19 22:21:00', 1);
 INSERT INTO `media_table` VALUES (4, 'Paul', 'https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg', 'link', 'png', '2021-01-15 19:31:11', 1);
 INSERT INTO `media_table` VALUES (5, 'Capture.PNG', 'afd2c8e25482186ebb0ff7c4fca5c7b9.PNG', 'image/png', 'PNG', '2021-01-18 08:05:47', 1);
+INSERT INTO `media_table` VALUES (6, 'Capture.PNG', 'aa35fbc3650cdd402b6cbac55dc020f9.PNG', 'image/png', 'PNG', '2021-01-19 09:26:54', 1);
+INSERT INTO `media_table` VALUES (7, 'Capture.PNG', 'c7e31033725a442268ffb0533f19edb4.PNG', 'image/png', 'PNG', '2021-01-19 09:29:17', 1);
 
 -- ----------------------------
 -- Table structure for medias_gallerys_table
