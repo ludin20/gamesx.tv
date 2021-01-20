@@ -1,0 +1,135 @@
+{% extends "AppBundle::layout.html.twig" %}
+{% block body%}
+<style type="text/css">
+    table {
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+
+    #tableForm {
+        height: 500px;
+        overflow-y: auto;
+        text-align: center;
+    }
+
+    #searchSection {
+        padding-top: 30px;
+        padding-bottom: 50px;
+    }
+
+    #filterSection {
+        padding-bottom: 30px;
+    }
+
+    #filterSection span {
+        float: left;
+    }
+
+    #searchSectionTitle {
+        padding-top: 10px;
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+       <div class="col-sm-offset-2 col-md-10">
+            <div class="card">
+                <div class="card-content">
+                    <div class="row" id="searchSection">
+                        <div class="col-md-4" id="searchSectionTitle">
+                            <span>Search Twitch Games</span>
+                        </div>
+                        <div class="col-md-8">
+                            <form>
+                                <input name="q" value="{{app.request.query.get("q")}}" type="text" class="search-input" placeholder="Name or ID">
+                                <button class="btn btn-sm search-btn" id="searchBtn"><i class="material-icons" style="font-size: 30px;">search</i></button>
+                            </form>
+                        </div>
+                    </div>
+                    {{form_start(form)}}
+                    <form method="#" action="#" id="tableForm">
+                        <div class="row" id="filterSection">
+                            <div class="col-md-4">
+                                <span>Sort By:</span>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <button class="btn btn-sm search-btn">Viewers</button>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button class="btn btn-sm search-btn">Hours Watched</button>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button class="btn btn-sm search-btn">Live</button>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button class="btn btn-sm search-btn">Peok Viewers</button>
+                                    </div>        
+                                </div>
+                            </div>
+                        </div>
+                        <table>
+                            {% for channel in livechannel_list %}
+                                <tr>
+                                    <th style="width: 2%">
+                                        <input type="checkbox" name="gameids[]" id="{{channel._id}}" value="{{loop.index}}">
+                                    </th>
+                                    <th style="width: 2%">
+                                        #{{loop.index}}
+                                    </th>
+                                    <th style="width: 5%">
+                                        <img src="{{channel.profile_banner}}" name="channel_profile_banner" id="channel_profile_banner" style="width: 100%">
+                                    </th>
+                                    <th>
+                                        <span name="channel_name" id="channel_name">{{channel.name}}</span>
+                                    </th>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                        <span>
+                            {{form_widget(form.save,{attr:{"class":"btn btn-fill btn-success"}})}}
+                        </span>
+                    
+                    {{form_end(form)}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $( document ).ready(function() {
+        var label = $("label");
+        label.remove();
+
+        var livechannel_name = $("#livechannel_name");
+        livechannel_name.removeAttr("required");
+        livechannel_name.addClass("hidden");
+
+        var data = [];
+        $("table :checkbox").change(function(e){
+            if ($(this).is(":checked")) {
+                var id = $(this)[0].id;
+                data.push(id);
+            } else {
+                var id = $(this)[0].id;
+
+                var index = data.indexOf(id);
+                if (index > -1) {
+                    data.splice(index, 1);
+                }
+            }
+            console.log(data.toString());
+            livechannel_name.val(data.toString());
+        });
+    });
+</script>
+{% endblock%}
