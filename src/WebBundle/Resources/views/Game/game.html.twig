@@ -1,13 +1,8 @@
-<a href="#" alt="{{game.title}}" class="poster {{(class is defined)? class : ""}}" >
+<a href="{{game.videoUrl}}" alt="{{game.title}}" class="poster {{(class is defined)? class : ""}}" >
 	<div>
 		<img width="170" height="255" src="{{game.url}}" />
 		<div>
-			{% if game.title != "" %}
-				<span>{{game.title}}</span>
-			{% endif %}
-			<!-- {% if game.sublabel != "" %}
-				<p {% if game.label != "" %} class="two" {% endif %}>{{game.sublabel}}</p>
-			{% endif %} -->
+			<span>{{game.title}}</span>
 		</div>
 	</div>
 </a>

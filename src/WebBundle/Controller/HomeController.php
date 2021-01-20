@@ -233,74 +233,10 @@ class HomeController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
+        $games=$em->getRepository('AppBundle:Game')->findAll();
+        $channels=$em->getRepository('AppBundle:Livechannel')->findAll();
+        $features=$em->getRepository('AppBundle:Feature')->findAll();
         
-        $settings = $em->getRepository("AppBundle:Settings")->findOneBy(array(), array());
-
-        $posters_not_sluged = $em->getRepository("AppBundle:Poster")->notSlug();
-        foreach ($posters_not_sluged as $key => $poster) {
-                $poster->setTitle($poster->getTitle()." ");
-        }
-        $em->flush();
-        foreach ($posters_not_sluged as $key => $poster) {
-                $poster->setTitle(trim($poster->getTitle()));
-        }
-        $em->flush();
-
-        $channels_not_sluged = $em->getRepository("AppBundle:Channel")->notSlug();
-        foreach ($channels_not_sluged as $key => $channel) {
-                $channel->setTitle($channel->getTitle()." ");
-        }
-        $em->flush();
-
-        foreach ($channels_not_sluged as $key => $channel) {
-                $channel->setTitle(trim($channel->getTitle()));
-        }
-        $em->flush();
-
-
-        $actors_not_sluged = $em->getRepository("AppBundle:Actor")->notSlug();
-        foreach ($actors_not_sluged as $key => $actor) {
-                $actor->setName($actor->getName()." ");
-        }
-        $em->flush();
-        foreach ($actors_not_sluged as $key => $actor) {
-                $actor->setName(trim($actor->getName()));
-        }
-        $em->flush();
-
-        $episodes_not_sluged = $em->getRepository("AppBundle:Episode")->notSlug();
-        foreach ($episodes_not_sluged as $key => $episode) {
-                $episode->setTitle($episode->getTitle()." ");
-        }
-        $em->flush();
-        foreach ($episodes_not_sluged as $key => $episode) {
-                $episode->setTitle(trim($episode->getTitle()));
-        }
-        $em->flush();
-
-
-        $slides = $em->getRepository("AppBundle:Slide")->findBy(array(), array("position" => "asc"));
-        $channels = $em->getRepository("AppBundle:Channel")->findBy(array("featured"=>true), array("created" => "desc"),15);
-        
-        $genres = $em->getRepository("AppBundle:Genre")->findBy(array(), array("position" => "asc"),5);
-
-
-        $popular = $em->getRepository("AppBundle:Poster")->findBy(array("enabled"=>true), array("views" => "desc"),15);
-        $bestrated = $em->getRepository("AppBundle:Poster")->findBy(array("enabled"=>true), array("rating" => "desc"),15);
-
-        $repository = $em->getRepository('AppBundle:Actor');
-        $query = $repository->createQueryBuilder('A')
-            ->select(array("A.id","A.name","A.type","A.born","A.slug","A.bio","m.url as image","m.extension as extension","SUM(P.views) as test"))
-            ->leftJoin('A.roles', 'G')
-            ->leftJoin('G.poster', 'P')
-            ->leftJoin('A.media', 'm')
-            ->groupBy('A.id')
-            ->orderBy('test',"DESC")
-            ->setMaxResults(20)
-            ->getQuery();
-        $actors = $query->getResult();
-      
-
         if ($this->getUser()!=null) {
           $user = $em->getRepository("UserBundle:User")->findOneBy(array("id"=>$this->getUser()->getId()));
           $session = new Session();
@@ -308,13 +244,9 @@ class HomeController extends Controller
         }
 
         return $this->render('WebBundle:Home:index.html.twig',array(
-            "slides" => $slides,
+            "games" => $games,
             "channels"=>$channels,
-            "actors"=>$actors,
-            "popular"=>$popular,
-            "bestrated"=>$bestrated,
-            "genres"=>$genres,
-            "settings"=>$settings
+            "features"=>$features
         ));
     }
     public function headerAction($subtitle,$og_type,$og_image,$keywords,$og_description) {

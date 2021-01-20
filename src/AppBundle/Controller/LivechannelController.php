@@ -79,6 +79,7 @@ class LivechannelController extends Controller
                     $temp_channel->setDescription($each_channel->description);
                     $temp_channel->setUrl($each_channel->profile_banner);
                     $temp_channel->setVideoUrl($each_channel->url);
+                    $temp_channel->setViewerCount($each_channel->views);
 
                     $em->persist($temp_channel);
                     $em->flush();

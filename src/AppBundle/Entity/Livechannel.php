@@ -67,6 +67,13 @@ class Livechannel
     private $position;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="viewer_count", type="integer")
+     */
+    private $viewer_count;
+
+    /**
      * @var string
      * @Assert\NotBlank()
      * @Assert\Length(
@@ -146,6 +153,29 @@ class Livechannel
     public function getPosition()
     {
         return $this->position;
+    }
+
+    /**
+     * Set viewer_count
+     *
+     * @param integer $viewer_count
+     * @return Livechannel
+     */
+    public function setViewerCount($viewer_count)
+    {
+        $this->viewer_count = $viewer_count;
+        
+        return $this;
+    }
+
+    /**
+     * Get viewer_count
+     *
+     * @return integer 
+     */
+    public function getViewerCount()
+    {
+        return $this->viewer_count;
     }
 
     /**
