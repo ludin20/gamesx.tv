@@ -81,16 +81,19 @@
                             {% for game in game_list %}
                                 <tr>
                                     <th style="width: 2%">
-                                        <input type="checkbox" name="gameIds[]" id="{{game.id}}" value="{{loop.index}}">
+                                        <input type="checkbox" name="gameids[]" id="{{game.id}},{{game.viewer_count}},{{game.description}},{{game.language}},{{game.video_url}}" value="{{loop.index}}">
                                     </th>
                                     <th style="width: 2%">
                                         #{{loop.index}}
                                     </th>
                                     <th style="width: 5%">
-                                        <img src="{{game.box_art_url}}" name="gameArtUrl" id="gameArtUrl" style="width: 100%">
+                                        <img src="{{game.box_art_url}}" name="game_art_url" id="game_art_url" style="width: 100%">
                                     </th>
                                     <th>
-                                        <span name="gameName" id="gameName">{{game.name}}</span>
+                                        <span name="game_name" id="game_name">{{game.name}}</span>
+                                    </th>
+                                    <th>
+                                        <span name="viewer_count" id="viewer_count">{{game.viewer_count}}</span>
                                     </th>
                                 </tr>
                             {% endfor %}
@@ -114,62 +117,48 @@
         game_title.removeAttr("required");
         game_title.addClass("hidden");
 
-        var ids = [];
+        var data = [];
         $("table :checkbox").change(function(e){
             if ($(this).is(":checked")) {
                 var val = $(this)[0].id;
-                ids.push(val);
+                var value = $(this)[0].value;
+                var arr = val.split(",");
+                var id = arr[0];
+                var viewer_count = arr[1];
+                var description = arr[2];
+                var language = arr[3];
+                var video_url = arr[4];
+
+                var json = {
+                    "value": value,
+                    "id": id,
+                    "viewer_count": viewer_count,
+                    "description": description,
+                    "language": language,
+                    "video_url": video_url
+                };
+                data.push(json);
             } else {
-                var val = $(this)[0].id;
-                const index = ids.indexOf(val);
-                if (index > -1) {
-                    ids.splice(index, 1);
+                var index = $(this)[0].value;
+
+                for (var i = 0; i < data.length; i ++) {
+                    if (data[i].value == index) {
+                        data.splice(i, 1);       
+                    }
                 }
             }
-            game_title.val(ids.toString());
+            var str = '';
+            for (var i = 0; i < data.length; i ++) {
+                if (i == data.length - 1) {
+                    str += JSON.stringify(data[i])    
+                } else {
+                    str += JSON.stringify(data[i]) + ",";   
+                }
+            }
+            str = '[' + str + ']';
+            console.log(str);
+            game_title.val(str);
         });
     });
-    // $("#searchBtn").click(function(e) {
-    //     e.preventDefault();
-    //     var searcKey = $("input[name=q]").val();
-    //     var game_list = {{ game_list|json_encode|raw }};
-    //     var temp_search_list = [];
-    //     for (var i = 0; i < game_list.length; i ++) {
-    //         if (game_list[i].name.includes(searcKey)) {
-    //             temp_search_list.push(game_list[i]);
-    //         }   
-    //     }
-
-    //     game_list = [];
-    //     game_list = temp_search_list;
-    // });
-
-    // $("#game_save").click(function(e) {
-    //     e.preventDefault();
-
-    //     var checks = $('input[type="checkbox"]:checked').map(function() {
-    //         return $(this).val();
-    //     }).get();
-
-    //     var game_list = {{ game_list|json_encode|raw }};
-    //     var games = [];
-    //     for (var i = 0; i < checks.length; i++) {
-    //         games.push(game_list[i]);
-    //     }
-
-    //     var formData = {
-    //         "games" : "games"
-    //     };
-
-    //     $.ajax({
-    //         type: "POST",
-    //         url: "/admin/game/add.html",
-    //         data: formData, // serializes the form's elements.
-    //         success: function(data)
-    //         {
-                
-    //         }
-    //     });
-    // })
 </script>
 {% endblock%}

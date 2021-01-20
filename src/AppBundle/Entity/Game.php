@@ -59,12 +59,57 @@ class Game
      */
     private $created;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="position", type="integer")
+     */
     private $position;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="viewer_count", type="integer")
+     */
+    private $viewer_count;
+
+    /**
+     * @var string
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 25,
+     * )
+     * @ORM\Column(name="description", type="string", length=255))
+     */
+    private $description;
+    
+    /**
+     * @var string
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 25,
+     * )
+     * @ORM\Column(name="language", type="string", length=255))
+     */
+    private $language;
+
+    /**
+     * @var string
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 25,
+     * )
+     * @ORM\Column(name="video_url", type="string", length=255))
+     */
+    private $video_url;
 
 
     public function __construct()
     {
+        $this->created= new \DateTime();
     }
     /**
      * Get id
@@ -122,6 +167,29 @@ class Game
     }
 
     /**
+     * Set viewer_count
+     *
+     * @param integer $viewer_count
+     * @return Game
+     */
+    public function setViewerCount($viewer_count)
+    {
+        $this->viewer_count = $viewer_count;
+        
+        return $this;
+    }
+
+    /**
+     * Get viewer_count
+     *
+     * @return integer 
+     */
+    public function getViewerCount()
+    {
+        return $this->viewer_count;
+    }
+
+    /**
      * Set url
      *
      * @param string $url
@@ -159,11 +227,77 @@ class Game
     /**
      * Get created
      *
-     * @return \DateTime 
+     * @return \string 
      */
     public function getCreated()
     {
         return $this->created;
+    }
+
+    /**
+     * Set description
+     *
+     * @param \string $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return \string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set language
+     *
+     * @param \string $language
+     */
+    public function setLanguage($language)
+    {
+        $this->language = $language;
+
+        return $this;
+    }
+
+    /**
+     * Get language
+     *
+     * @return \string 
+     */
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+
+    /**
+     * Set video_url
+     *
+     * @param \string $video_url
+     */
+    public function setVideoUrl($video_url)
+    {
+        $this->video_url = $video_url;
+
+        return $this;
+    }
+
+    /**
+     * Get video_url
+     *
+     * @return \string 
+     */
+    public function getVideoUrl()
+    {
+        return $this->video_url;
     }
 
     public function __toString()

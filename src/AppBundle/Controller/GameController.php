@@ -21,7 +21,7 @@ class GameController extends Controller
     public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $games = $em->getRepository("AppBundle:Game")->findBy(array(),array("position"=>"asc"));
+        $games=$em->getRepository('AppBundle:Game')->findAll();
 
         $q="( 1=1 )";
         if ($request->query->has("q") and $request->query->get("q")!="") {
@@ -32,7 +32,6 @@ class GameController extends Controller
         $query = $em->createQuery($dql);
         
         $paginator = $this->get('knp_paginator');
-
 
         $pagination = $paginator->paginate(
             $query,
@@ -46,73 +45,25 @@ class GameController extends Controller
         ));
     }
 
-    public function api_allAction(Request $request,$token)
-    {
-        if ($token!=$this->container->getParameter('token_app')) {
-            throw new NotFoundHttpException("Page not found");  
-        }
-        $em=$this->getDoctrine()->getManager();
-
-        $imagineCacheManager = $this->get('liip_imagine.cache.manager');
-        $list=array();
-        $games =   $em->getRepository("AppBundle:Game")->findBy(array(), array("position"=>"asc"));
-        foreach ($games as $key => $game) {
-            $s["id"]=$game->getId();
-            $s["title"]=$game->getTitle();
-            $s["url"]=$game->getUrl();
-            $list[]=$s;
-        }
-        header('Content-Type: application/json'); 
-        $encoders = array(new XmlEncoder(), new JsonEncoder());
-        $normalizers = array(new ObjectNormalizer());
-        $serializer = new Serializer($normalizers, $encoders);
-        $jsonContent=$serializer->serialize($list, 'json');
-        return new Response($jsonContent);
-    }
-    public function api_by_sectionAction(Request $request,$id,$token)
-    {
-        if ($token!=$this->container->getParameter('token_app')) {
-            throw new NotFoundHttpException("Page not found");  
-        }
-        $em=$this->getDoctrine()->getManager();
-        // $section=$em->getRepository("AppBundle:Section")->find($id);
-
-        $imagineCacheManager = $this->get('liip_imagine.cache.manager');
-        $list=array();
-        $games =   $em->getRepository("AppBundle:Game")->findBy(array(), array("position"=>"asc"));
-        foreach ($games as $key => $game) {
-            $s["id"]=$game->getId();
-            $s["title"]=$game->getTitle();
-            $s["url"]=$game->getUrl();
-            $list[]=$s;
-        }
-        header('Content-Type: application/json'); 
-        $encoders = array(new XmlEncoder(), new JsonEncoder());
-        $normalizers = array(new ObjectNormalizer());
-        $serializer = new Serializer($normalizers, $encoders);
-        $jsonContent=$serializer->serialize($list, 'json');
-        return new Response($jsonContent);
-    }
-    
     public function addAction(Request $request)
     {
         $game = new Game();
         $form = $this->createForm(GameType::class,$game);
+        
         $em=$this->getDoctrine()->getManager();
         $form->handleRequest($request);
         // if ($form->isSubmitted() && $form->isValid()) {
-
         if ($form->isSubmitted()) {
             if ($game->getTitle() == null || $game->getTitle() == "") {
                 $this->addFlash('warning', 'Sorry, Please Select Game');
                 return $this->redirect($this->generateUrl('app_game_add'));
             } else {
-                $idStr = $game->getTitle();
-                $ids = explode(",", $idStr);
+                $dataStr = $game->getTitle();
+                $dataArr = json_decode($dataStr, true);
 
-                for ($i = 0; $i < count($ids); $i ++) {
+                for ($i = 0; $i < count($dataArr); $i ++) {
                     $temp_game= new Game();
-                    $each_game = $this->getGameById($ids[$i]);
+                    $each_game = $this->getGameById($dataArr[$i]["id"]);
                     $max=0;
                     $games=$em->getRepository('AppBundle:Game')->findAll();
                     foreach ($games as $key => $value) {
@@ -127,6 +78,11 @@ class GameController extends Controller
                     $replacedStr = str_replace("{width}x{height}", "500x500", $each_game[0]->box_art_url);
                     $each_game[0]->box_art_url = $replacedStr;
                     $temp_game->setUrl($each_game[0]->box_art_url);
+                    
+                    $temp_game->setDescription($dataArr[$i]["description"]);
+                    $temp_game->setLanguage($dataArr[$i]["language"]);
+                    $temp_game->setVideoUrl($dataArr[$i]["video_url"]);
+                    $temp_game->setViewerCount((int)$dataArr[$i]["viewer_count"]);
 
                     $em->persist($temp_game);
                     $em->flush();
@@ -137,8 +93,7 @@ class GameController extends Controller
         } else {
             $q = $request->query->get("q");
 
-            $url = 'https://api.twitch.tv/helix/games/top?';
-            $first = 20;
+            $url = 'https://api.twitch.tv/helix/streams';
 
             $headers = array(
                 'Content-Type: application/json',
@@ -147,7 +102,7 @@ class GameController extends Controller
             );
 
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url.'first='.$first);
+            curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
             curl_setopt($ch, CURLOPT_HEADER, 0);
             $body = '{}';
@@ -162,12 +117,28 @@ class GameController extends Controller
             }
 
             $result_list = json_decode($result);
-            if ($q != null || $q != "")  {
-                $game_list = [];
 
-                for ($j = 0; $j < count($result_list->data); $j ++) {
-                    if(strpos($result_list->data[$j]->name, $q) !== false || $result_list->data[$j]->id == $q) {
-                        $game_list[] = $result_list->data[$j];
+            $stream_list = [];
+            for ($i = 0; $i < count($result_list->data); $i ++) {
+                if ($result_list->data[$i]->type == "live") {
+                    $stream_list[] = $result_list->data[$i];
+                }
+            }
+
+            $game_list = [];
+            if ($q != null || $q != "")  {
+                for ($j = 0; $j < count($stream_list); $j ++) {
+                    $game = $this->getGameById($stream_list[$j]->game_id);
+                    $video = $this->getVideoByGameId($stream_list[$j]->game_id);
+
+                    if (strpos($game[0]->name, $q) !== false || $game[0]->id == $q) {
+                        $replacedStr = str_replace("{width}x{height}", "50x50", $game[0]->box_art_url);
+                        $game[0]->box_art_url = $replacedStr;
+                        $game[0]->viewer_count = $stream_list[$j]->viewer_count;
+                        $game[0]->description = $stream_list[$j]->title;
+                        $game[0]->language = $stream_list[$j]->language;
+                        $game[0]->video_url = $video->url;
+                        $game_list[] = $game[0];
                     }
                 }
 
@@ -176,14 +147,18 @@ class GameController extends Controller
                     $game_list[$i]->box_art_url = $replacedStr;
                 }
             } else {
-                $game_list = [];
-
-                for ($i = 0; $i < count($result_list->data); $i ++) {
-                    $replacedStr = str_replace("{width}x{height}", "50x50", $result_list->data[$i]->box_art_url);
-                    $result_list->data[$i]->box_art_url = $replacedStr;
+                for ($j = 0; $j < count($stream_list); $j ++) {
+                    $game = $this->getGameById($stream_list[$j]->game_id);
+                    $video = $this->getVideoByGameId($stream_list[$j]->game_id);
+                    
+                    $replacedStr = str_replace("{width}x{height}", "50x50", $game[0]->box_art_url);
+                    $game[0]->box_art_url = $replacedStr;
+                    $game[0]->viewer_count = $stream_list[$j]->viewer_count;
+                    $game[0]->description = $stream_list[$j]->title;
+                    $game[0]->language = $stream_list[$j]->language;
+                    $game[0]->video_url = $video->url;
+                    $game_list[] = $game[0];
                 }
-
-                $game_list = $result_list->data;
             }
 
             curl_close($ch);
@@ -220,6 +195,33 @@ class GameController extends Controller
         return $game;
     }
 
+    private function getVideoByGameId($id) {
+        $url = 'https://api.twitch.tv/helix/videos?';
+        $headers = array(
+            'Content-Type: application/json',
+            'Authorization: Bearer yyv0kg2yopv5x91lrwmyfttw0pmdk8',
+            'Client-Id: jhch4uoxcoh2d4wc77joe05ff6q8vz'
+        );
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url.'game_id='.$id.'&sort=views');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        $body = '{}';
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($ch, CURLOPT_POSTFIELDS,$body);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        
+        $result = curl_exec($ch);
+        
+        if ($result === FALSE) {
+            die('Curl failed: ' . curl_error($ch));
+        }
+
+        $video = json_decode($result)->data;
+        return $video[0];
+    }
+
     public function deleteAction($id,Request $request){
         $em=$this->getDoctrine()->getManager();
 
@@ -248,24 +250,6 @@ class GameController extends Controller
             return $this->redirect($this->generateUrl('app_game_index'));
         }
         return $this->render('AppBundle:Game:delete.html.twig',array("form"=>$form->createView()));
-    }
-    public function editAction(Request $request,$id)
-    {
-        $em=$this->getDoctrine()->getManager();
-        $game=$em->getRepository("AppBundle:Game")->find($id);
-        if ($game==null) {
-            throw new NotFoundHttpException("Page not found");
-        }
-        $form = $this->createForm(GameType::class,$game);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($game);
-            $em->flush();
-            $this->addFlash('success', 'Operation has been done successfully');
-            return $this->redirect($this->generateUrl('app_game_index'));
- 
-        }
-        return $this->render("AppBundle:Game:edit.html.twig",array("game"=>$game,"form"=>$form->createView()));
     }
 }
 ?>

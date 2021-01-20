@@ -495,17 +495,39 @@ app_game_add:
     path: /admin/game/add.html
     defaults: { _controller: AppBundle:Game:add}
 
-app_game_edit:
-    path: /admin/game/edit/{id}.html
-    defaults: { _controller: AppBundle:Game:edit}
-
 app_game_delete:
     path: /admin/game/delete/{id}.html
     defaults: { _controller: AppBundle:Game:delete}
 
-api_game_all:
-    path:     /api/game/all/{token}/{purchase}/
-    defaults: { _controller: AppBundle:Game:api_all }
+#feature pro
+
+app_feature_index:
+    path: /admin/feature/index.html
+    defaults: { _controller: AppBundle:Feature:index}
+
+app_feature_add:
+    path: /admin/feature/add.html
+    defaults: { _controller: AppBundle:Feature:add}
+
+app_feature_delete:
+    path: /admin/feature/delete/{id}.html
+    defaults: { _controller: AppBundle:Feature:delete}
+
+#live channel
+
+app_livechannel_index:
+    path: /admin/livechannel/index.html
+    defaults: { _controller: AppBundle:Livechannel:index}
+
+app_livechannel_add:
+    path: /admin/livechannel/add.html
+    defaults: { _controller: AppBundle:Livechannel:add}
+
+app_livechannel_delete:
+    path: /admin/livechannel/delete/{id}.html
+    defaults: { _controller: AppBundle:Livechannel:delete}
+
+
 #movies
 
 app_movie_index:
