@@ -55,6 +55,25 @@ security:
                 domain:   ~ # Defaults to the current domain from $_SERVER
 
     access_control:
+        # - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        # - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        # - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        
+        # - { path: ^/admin/api/, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        # - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        # - { path: ^/admin/logout$, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        # - { path: ^/admin/login_check$, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }        
+
+        # - { path: ^/admin/, role: ROLE_ADMIN, requires_channel: https }
+        # - { path: ^/article/, role: ROLE_USER, requires_channel: https }
+        # - { path: ^/medias/, role: ROLE_USER, requires_channel: https }
+        # - { path: ^/subscription/notify.html, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        # - { path: ^/faq-support.html, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        # - { path: ^/refund-policy.html, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        # - { path: ^/subscription/, role: ROLE_USER, requires_channel: https }
+        # - { path: /mylist.html, role: ROLE_USER, requires_channel: https }
+
+
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
@@ -65,7 +84,7 @@ security:
         - { path: ^/admin/login_check$, role: IS_AUTHENTICATED_ANONYMOUSLY }        
 
         - { path: ^/admin/, role: ROLE_ADMIN }
-        - { path: ^/article/, role: ROLE_USER}
+        - { path: ^/article/, role: ROLE_USER }
         - { path: ^/medias/, role: ROLE_USER }
         - { path: ^/subscription/notify.html, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/faq-support.html, role: IS_AUTHENTICATED_ANONYMOUSLY }
