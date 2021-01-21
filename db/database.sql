@@ -11,7 +11,7 @@
  Target Server Version : 100316
  File Encoding         : 65001
 
- Date: 21/01/2021 16:53:38
+ Date: 21/01/2021 17:29:24
 */
 
 SET NAMES utf8mb4;
@@ -225,7 +225,7 @@ CREATE TABLE `episode_table`  (
 DROP TABLE IF EXISTS `feature_table`;
 CREATE TABLE `feature_table`  (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
+  `name` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `url` varchar(3000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `video_url` varchar(3000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `position` int NULL DEFAULT NULL,
@@ -299,16 +299,16 @@ CREATE TABLE `gallery_table`  (
 DROP TABLE IF EXISTS `game_table`;
 CREATE TABLE `game_table`  (
   `id` int NOT NULL AUTO_INCREMENT,
-  `title` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `title` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `position` int NOT NULL,
   `created` datetime(0) NULL DEFAULT NULL,
   `viewer_count` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `description` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
+  `description` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `language` varchar(3000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `video_url` varchar(3000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of game_table
@@ -316,6 +316,7 @@ CREATE TABLE `game_table`  (
 INSERT INTO `game_table` VALUES (1, 'FIFA 21', 'https://static-cdn.jtvnw.net/ttv-boxart/FIFA%2021-500x500.jpg', 1, '2021-01-21 10:43:47', '7.7k', 'FUT CHAMPIONS REWARD...', 'en', 'https://www.twitch.tv/videos/785613298');
 INSERT INTO `game_table` VALUES (2, 'League of Legends', 'https://static-cdn.jtvnw.net/ttv-boxart/League%20of%20Legends-500x500.jpg', 2, '2021-01-21 10:43:51', '7.6k', 'SUPER TRYHARD STREAM...', 'pt', 'https://www.twitch.tv/videos/264624894');
 INSERT INTO `game_table` VALUES (3, 'Tom Clancy\'s Rainbow Six Siege', 'https://static-cdn.jtvnw.net/ttv-boxart/Tom%20Clancy%27s%20Rainbow%20Six%20Siege-500x500.jpg', 3, '2021-01-21 10:43:54', '7.2k', '????!Drops LIVE HERE...', 'en', 'https://www.twitch.tv/videos/830826700');
+INSERT INTO `game_table` VALUES (5, 'Slots', 'https://static-cdn.jtvnw.net/ttv-boxart/Slots-500x500.jpg', 4, '2021-01-21 15:59:51', '16.7k', '???????? Boost: Cube...', 'en', 'https://www.twitch.tv/videos/576938139');
 
 -- ----------------------------
 -- Table structure for genre_table
@@ -382,8 +383,8 @@ CREATE TABLE `language_table`  (
 DROP TABLE IF EXISTS `livechannel_table`;
 CREATE TABLE `livechannel_table`  (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
-  `description` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
+  `name` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  `description` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `position` int NULL DEFAULT NULL,
   `url` varchar(3000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `video_url` varchar(3000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
