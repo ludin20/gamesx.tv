@@ -11,7 +11,7 @@
  Target Server Version : 100316
  File Encoding         : 65001
 
- Date: 20/01/2021 19:51:41
+ Date: 21/01/2021 15:48:03
 */
 
 SET NAMES utf8mb4;
@@ -276,7 +276,7 @@ CREATE TABLE `fos_user_table`  (
 -- ----------------------------
 -- Records of fos_user_table
 -- ----------------------------
-INSERT INTO `fos_user_table` VALUES (1, NULL, 'ADMIN', 'admin', 'ADMIN', 'admin', 1, 'djtfgbufxr4gwk4k0gss4sgs4k48wc4', '$2y$13$djtfgbufxr4gwk4k0gss4ekodAwfJ3IP01OyKvMD.stoxgr6MMa2S', '2021-01-20 17:21:55', 0, 0, NULL, NULL, 'a:1:{i:0;s:10:\"ROLE_ADMIN\";}', 0, 'Video Status', 'email', NULL, NULL);
+INSERT INTO `fos_user_table` VALUES (1, NULL, 'ADMIN', 'admin', 'ADMIN', 'admin', 1, 'djtfgbufxr4gwk4k0gss4sgs4k48wc4', '$2y$13$djtfgbufxr4gwk4k0gss4ekodAwfJ3IP01OyKvMD.stoxgr6MMa2S', '2021-01-21 10:29:00', 0, 0, NULL, NULL, 'a:1:{i:0;s:10:\"ROLE_ADMIN\";}', 0, 'Video Status', 'email', NULL, NULL);
 INSERT INTO `fos_user_table` VALUES (2, 4, 'Paul425@protonmail.com', 'paul425@protonmail.com', 'Paul425@protonmail.com', 'paul425@protonmail.com', 1, '8US.JCnRs8pXwTZSupzA6eb9owVyKM8mXB/VfAhebYg', '$2y$13$lyoUA19DwCUn8hlmh0lVG.HWCliyrgNRpdrH/.Ci8Lj4YHt2GqSky', '2021-01-15 19:31:12', 0, 0, NULL, NULL, 'a:0:{}', 0, 'Paul', 'email', NULL, 'dark');
 
 -- ----------------------------
@@ -303,18 +303,19 @@ CREATE TABLE `game_table`  (
   `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `position` int NOT NULL,
   `created` datetime(0) NULL DEFAULT NULL,
-  `viewer_count` int NOT NULL,
+  `viewer_count` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `description` varchar(3000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `language` varchar(3000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `video_url` varchar(3000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of game_table
 -- ----------------------------
-INSERT INTO `game_table` VALUES (1, 'Call of Duty: Warzone', 'https://static-cdn.jtvnw.net/ttv-boxart/./Call%20of%20Duty:%20Warzone-500x500.jpg', 1, '2021-01-20 17:24:25', 22621, 'HIGH KILL WINS [1470+ Wins] | @Symfuhny On All Socials | !Socials !Code !vid !loadout', 'en', 'https://www.twitch.tv/videos/814230487');
-INSERT INTO `game_table` VALUES (2, 'Rust', 'https://static-cdn.jtvnw.net/ttv-boxart/Rust-500x500.jpg', 2, '2021-01-20 17:24:27', 21821, 'EGOLAND SE VIENE?', 'es', 'https://www.twitch.tv/videos/860026261');
+INSERT INTO `game_table` VALUES (1, 'FIFA 21', 'https://static-cdn.jtvnw.net/ttv-boxart/FIFA%2021-500x500.jpg', 1, '2021-01-21 10:43:47', '7.7k', 'FUT CHAMPIONS REWARD...', 'en', 'https://www.twitch.tv/videos/785613298');
+INSERT INTO `game_table` VALUES (2, 'League of Legends', 'https://static-cdn.jtvnw.net/ttv-boxart/League%20of%20Legends-500x500.jpg', 2, '2021-01-21 10:43:51', '7.6k', 'SUPER TRYHARD STREAM...', 'pt', 'https://www.twitch.tv/videos/264624894');
+INSERT INTO `game_table` VALUES (3, 'Tom Clancy\'s Rainbow Six Siege', 'https://static-cdn.jtvnw.net/ttv-boxart/Tom%20Clancy%27s%20Rainbow%20Six%20Siege-500x500.jpg', 3, '2021-01-21 10:43:54', '7.2k', '????!Drops LIVE HERE...', 'en', 'https://www.twitch.tv/videos/830826700');
 
 -- ----------------------------
 -- Table structure for genre_table
