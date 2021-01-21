@@ -79,7 +79,13 @@ class GameController extends Controller
                     $each_game[0]->box_art_url = $replacedStr;
                     $temp_game->setUrl($each_game[0]->box_art_url);
                     
-                    $temp_game->setDescription($dataArr[$i]["description"]);
+                    if (strlen(json_encode($dataArr[$i]["description"])) > 20) {
+                        $description = substr(json_encode($dataArr[$i]["description"]), 0, 20) . "...";
+                        $temp_game->setDescription($description);
+                    } else {
+                        $temp_game->setDescription(json_encode($dataArr[$i]["description"]));
+                    }
+                    
                     $temp_game->setLanguage($dataArr[$i]["language"]);
                     $temp_game->setVideoUrl($dataArr[$i]["video_url"]);
                     if ((int)$dataArr[$i]["viewer_count"] > 1000) {

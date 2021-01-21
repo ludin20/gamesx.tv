@@ -76,7 +76,12 @@ class LivechannelController extends Controller
                     $temp_channel->setPosition($max+1);
                     $temp_channel->setName($each_channel->name);
                     
-                    $temp_channel->setDescription($each_channel->description);
+                    if (strlen(json_encode($dataArr[$i]["description"])) > 20) {
+                        $description = substr(json_encode($each_channel->description), 0, 20) . "...";
+                        $temp_channel->setDescription($description);
+                    } else {
+                        $temp_channel->setDescription(json_encode($each_channel->description));
+                    }
                     $temp_channel->setUrl($each_channel->profile_banner);
                     $temp_channel->setVideoUrl($each_channel->url);
                     $temp_channel->setViewerCount($each_channel->views);
