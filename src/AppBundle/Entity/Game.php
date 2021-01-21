@@ -67,9 +67,9 @@ class Game
     private $position;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="viewer_count", type="integer")
+     * @ORM\Column(name="viewer_count", type="string")
      */
     private $viewer_count;
 
@@ -169,7 +169,7 @@ class Game
     /**
      * Set viewer_count
      *
-     * @param integer $viewer_count
+     * @param string $viewer_count
      * @return Game
      */
     public function setViewerCount($viewer_count)
@@ -182,7 +182,7 @@ class Game
     /**
      * Get viewer_count
      *
-     * @return integer 
+     * @return string 
      */
     public function getViewerCount()
     {

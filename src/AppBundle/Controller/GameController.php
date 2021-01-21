@@ -82,7 +82,13 @@ class GameController extends Controller
                     $temp_game->setDescription($dataArr[$i]["description"]);
                     $temp_game->setLanguage($dataArr[$i]["language"]);
                     $temp_game->setVideoUrl($dataArr[$i]["video_url"]);
-                    $temp_game->setViewerCount((int)$dataArr[$i]["viewer_count"]);
+                    if ((int)$dataArr[$i]["viewer_count"] > 1000) {
+                        $format = $this->changeNumberFormat((int)$dataArr[$i]["viewer_count"]);
+                        $temp_game->setViewerCount($format);
+                    } else {
+                        $temp_game->setViewerCount($dataArr[$i]["viewer_count"]);    
+                    }
+                    
 
                     $em->persist($temp_game);
                     $em->flush();
@@ -150,17 +156,21 @@ class GameController extends Controller
                 for ($j = 0; $j < count($stream_list); $j ++) {
                     $game = $this->getGameById($stream_list[$j]->game_id);
                     $video = $this->getVideoByGameId($stream_list[$j]->game_id);
-                    
+                           
                     $replacedStr = str_replace("{width}x{height}", "50x50", $game[0]->box_art_url);
                     $game[0]->box_art_url = $replacedStr;
                     $game[0]->viewer_count = $stream_list[$j]->viewer_count;
-                    $game[0]->description = $stream_list[$j]->title;
+                    if (strlen($stream_list[$j]->title) > 20) {
+                        $game[0]->description = substr($stream_list[$j]->title, 0, 20) . "...";
+                    } else {
+                        $game[0]->description = $stream_list[$j]->title;    
+                    }
+                    
                     $game[0]->language = $stream_list[$j]->language;
                     $game[0]->video_url = $video->url;
                     $game_list[] = $game[0];
                 }
             }
-
             curl_close($ch);
         }
 
@@ -220,6 +230,19 @@ class GameController extends Controller
 
         $video = json_decode($result)->data;
         return $video[0];
+    }
+
+    private function changeNumberFormat($viewer_count) {
+        $x = round($viewer_count);
+        $x_number_format = number_format($x);
+        $x_array = explode(',', $x_number_format);
+        $x_parts = array('k', 'm', 'b', 't');
+        $x_count_parts = count($x_array) - 1;
+        $x_display = $x;
+        $x_display = $x_array[0] . ((int) $x_array[1][0] !== 0 ? '.' . $x_array[1][0] : '');
+        $x_display .= $x_parts[$x_count_parts - 1];
+
+        return $x_display;
     }
 
     public function deleteAction($id,Request $request){
