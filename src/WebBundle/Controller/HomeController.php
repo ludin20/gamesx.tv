@@ -160,6 +160,8 @@ class HomeController extends Controller
         $repository_channel = $em->getRepository('AppBundle:Channel');
         $repository_actor = $em->getRepository('AppBundle:Actor');
         $repository_game = $em->getRepository('AppBundle:Game');
+        $repository_livechannel = $em->getRepository('AppBundle:Livechannel');
+        $repository_feature = $em->getRepository('AppBundle:Feature');
 
 
         $query_channel = $repository_channel->createQueryBuilder('c')
@@ -186,11 +188,29 @@ class HomeController extends Controller
 
         $games = $query_game->getResult();
 
+        $query_livechannel = $repository_livechannel->createQueryBuilder('c')
+            ->where("c.name like '%" . $request->query->get("q") . "%'")
+            ->addOrderBy('c.created', 'desc')
+            ->addOrderBy('c.id', 'ASC')
+            ->getQuery();
+
+        $livechannels = $query_livechannel->getResult();
+
+        $query_feature = $repository_feature->createQueryBuilder('c')
+            ->where("c.name like '%" . $request->query->get("q") . "%'")
+            ->addOrderBy('c.created', 'desc')
+            ->addOrderBy('c.id', 'ASC')
+            ->getQuery();
+
+        $features = $query_feature->getResult();
+
         return $this->render('WebBundle:Home:search.html.twig',array(
             "channels"=>$channels,
             "posters"=>$posters,
             "actors"=>$actors,
             "games"=>$games,
+            "livechannels"=>$livechannels,
+            "features"=>$features,
             "episodes" =>array()
         ));
     }

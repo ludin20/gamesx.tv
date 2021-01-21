@@ -79,8 +79,46 @@
 					<button  class="next_btn"><i class="fa fa-chevron-right"></i></button>
 					<div class="flix-scroll-x">
 						{% for game in games %}
-							<a class="channel" href="#" >
+							<a class="channel" href="{{game.videoUrl}}" >
 								<img src="{{game.url}}"/>
+							</a>
+						{% endfor %}
+					</div>
+				</div>
+			{% endif %}
+
+			{% if livechannels|length != 0 %}
+				<div class="col-sm-12 col-md-12 ">
+					<a class="title-more">
+						<span>Live Channels</span>
+					</a>
+				</div>
+				<div class="flix-carousel" >
+					<button  class="prev_btn"><i class="fa fa-chevron-left"></i></button>
+					<button  class="next_btn"><i class="fa fa-chevron-right"></i></button>
+					<div class="flix-scroll-x">
+						{% for channel in livechannels %}
+							<a class="channel" href="{{channel.videoUrl}}" >
+								<img src="{{channel.url}}"/>
+							</a>
+						{% endfor %}
+					</div>
+				</div>
+			{% endif %}
+
+			{% if features|length != 0 %}
+				<div class="col-sm-12 col-md-12 ">
+					<a class="title-more">
+						<span>Feature Pro's</span>
+					</a>
+				</div>
+				<div class="flix-carousel" >
+					<button  class="prev_btn"><i class="fa fa-chevron-left"></i></button>
+					<button  class="next_btn"><i class="fa fa-chevron-right"></i></button>
+					<div class="flix-scroll-x">
+						{% for feature in features %}
+							<a class="channel" href="{{feature.videoUrl}}" >
+								<img src="{{feature.url}}"/>
 							</a>
 						{% endfor %}
 					</div>

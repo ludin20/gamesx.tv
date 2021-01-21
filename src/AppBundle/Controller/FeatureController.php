@@ -127,8 +127,8 @@ class FeatureController extends Controller
                     $video = $this->getVideoByUserId($stream_list[$j]->user_id);
 
                     $feature[0]->video_url = $video->url;
-
-                    if ($feature[0]->id == $q) {
+                    
+                    if (strpos($feature[0]->display_name, $q) !== false || $feature[0]->id == $q) {
                         $feature_list[] = $feature[0];
                     }
                 }
