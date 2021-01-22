@@ -140,13 +140,14 @@ class GameController extends Controller
                 for ($j = 0; $j < count($stream_list); $j ++) {
                     $game = $this->getGameById($stream_list[$j]->game_id);
                     $stream = $this->getLiveStreamByGame($game[0]->name);
+                    $video = $this->getVideoByGameId($stream_list[$j]->game_id);
 
                     if (strpos($game[0]->name, $q) !== false || $game[0]->id == $q) {
                         $replacedStr = str_replace("{width}x{height}", "50x50", $stream->preview->template);
                         $replacedStr1 = str_replace("{width}x{height}", "500x500", $stream->preview->template);
                         $game[0]->box_art_url = $replacedStr;
                         $game[0]->thumbnail = $replacedStr1;
-                        $game[0]->viewer_count = $stream->channel->views;
+                        $game[0]->viewer_count = $video->view_count;
                         $game[0]->description = $stream->channel->name;
                         $game[0]->language = $stream->channel->language;
                         $game[0]->video_url = $stream->channel->url;
@@ -164,13 +165,14 @@ class GameController extends Controller
                 for ($j = 0; $j < count($stream_list); $j ++) {
                     $game = $this->getGameById($stream_list[$j]->game_id);
                     $stream = $this->getLiveStreamByGame($game[0]->name);
+                    $video = $this->getVideoByGameId($stream_list[$j]->game_id);
                            
                     $replacedStr = str_replace("{width}x{height}", "50x50", $stream->preview->template);
                     $replacedStr1 = str_replace("{width}x{height}", "500x500", $stream->preview->template);
 
                     $game[0]->box_art_url = $replacedStr;
                     $game[0]->thumbnail = $replacedStr1;
-                    $game[0]->viewer_count = $stream->channel->views;
+                    $game[0]->viewer_count = $video->view_count;
                     if (strlen($stream->channel->name) > 20) {
                         $game[0]->description = substr($stream->channel->name, 0, 20) . "...";
                     } else {
