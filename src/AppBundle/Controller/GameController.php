@@ -75,9 +75,7 @@ class GameController extends Controller
                     $temp_game->setPosition($max+1);
                     $temp_game->setTitle($each_game[0]->name);
 
-                    $replacedStr = str_replace("{width}x{height}", "500x500", $each_game[0]->box_art_url);
-                    $each_game[0]->box_art_url = $replacedStr;
-                    $temp_game->setUrl($each_game[0]->box_art_url);
+                    $temp_game->setUrl($dataArr[$i]["thumbnail"]);
                     
                     if (strlen(json_encode($dataArr[$i]["description"])) > 20) {
                         $description = substr(json_encode($dataArr[$i]["description"]), 0, 20) . "...";
@@ -141,39 +139,46 @@ class GameController extends Controller
             if ($q != null || $q != "")  {
                 for ($j = 0; $j < count($stream_list); $j ++) {
                     $game = $this->getGameById($stream_list[$j]->game_id);
-                    $video = $this->getVideoByGameId($stream_list[$j]->game_id);
+                    $stream = $this->getLiveStreamByGame($game[0]->name);
 
                     if (strpos($game[0]->name, $q) !== false || $game[0]->id == $q) {
-                        $replacedStr = str_replace("{width}x{height}", "50x50", $game[0]->box_art_url);
+                        $replacedStr = str_replace("{width}x{height}", "50x50", $stream->preview->template);
+                        $replacedStr1 = str_replace("{width}x{height}", "500x500", $stream->preview->template);
                         $game[0]->box_art_url = $replacedStr;
-                        $game[0]->viewer_count = $stream_list[$j]->viewer_count;
-                        $game[0]->description = $stream_list[$j]->title;
-                        $game[0]->language = $stream_list[$j]->language;
-                        $game[0]->video_url = $video->url;
+                        $game[0]->thumbnail = $replacedStr1;
+                        $game[0]->viewer_count = $stream->channel->views;
+                        $game[0]->description = $stream->channel->description;
+                        $game[0]->language = $stream->channel->language;
+                        $game[0]->video_url = $stream->channel->url;
                         $game_list[] = $game[0];
                     }
                 }
 
                 for ($i = 0; $i < count($game_list); $i ++) {
                     $replacedStr = str_replace("{width}x{height}", "50x50", $game_list[$i]->box_art_url);
+                    $replacedStr1 = str_replace("{width}x{height}", "500x500", $game_list[$i]->box_art_url);
                     $game_list[$i]->box_art_url = $replacedStr;
+                    $game_list[$i]->thumbnail = $replacedStr1;
                 }
             } else {
                 for ($j = 0; $j < count($stream_list); $j ++) {
                     $game = $this->getGameById($stream_list[$j]->game_id);
-                    $video = $this->getVideoByGameId($stream_list[$j]->game_id);
+                    $stream = $this->getLiveStreamByGame($game[0]->name);
                            
-                    $replacedStr = str_replace("{width}x{height}", "50x50", $game[0]->box_art_url);
+                    $replacedStr = str_replace("{width}x{height}", "50x50", $stream->preview->template);
+                    $replacedStr1 = str_replace("{width}x{height}", "500x500", $stream->preview->template);
+
                     $game[0]->box_art_url = $replacedStr;
-                    $game[0]->viewer_count = $stream_list[$j]->viewer_count;
-                    if (strlen($stream_list[$j]->title) > 20) {
-                        $game[0]->description = substr($stream_list[$j]->title, 0, 20) . "...";
+                    $game[0]->thumbnail = $replacedStr1;
+                    $game[0]->viewer_count = $stream->channel->views;
+                    if (strlen($stream->channel->description) > 20) {
+                        $game[0]->description = substr($stream->channel->description, 0, 20) . "...";
                     } else {
-                        $game[0]->description = $stream_list[$j]->title;    
+                        $game[0]->description = $stream->channel->description;    
                     }
                     
-                    $game[0]->language = $stream_list[$j]->language;
-                    $game[0]->video_url = $video->url;
+                    $game[0]->language = $stream->channel->language;
+                    $game[0]->video_url = $stream->channel->url;
                     $game_list[] = $game[0];
                 }
             }
@@ -209,6 +214,34 @@ class GameController extends Controller
         $game = json_decode($result)->data;
 
         return $game;
+    }
+
+    private function getLiveStreamByGame($game) {
+        $url = 'https://api.twitch.tv/kraken/streams/?';
+        $headers = array(
+            // 'Content-Type: application/json',
+            'Accept: application/vnd.twitchtv.v5+json',
+            'Client-Id: jhch4uoxcoh2d4wc77joe05ff6q8vz'
+        );
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url.'game='.urlencode($game).'&sort=view');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        $body = '{}';
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($ch, CURLOPT_POSTFIELDS,$body);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        
+        $result = curl_exec($ch);
+        
+        if ($result === FALSE) {
+            die('Curl failed: ' . curl_error($ch));
+        }
+
+        $stream_list = json_decode($result)->streams;
+        
+        return $stream_list[0];
     }
 
     private function getVideoByGameId($id) {
