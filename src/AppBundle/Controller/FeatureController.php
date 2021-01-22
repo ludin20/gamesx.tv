@@ -78,6 +78,7 @@ class FeatureController extends Controller
                     $temp_feature->setUrl($each_feature[0]->profile_image_url);
                     $temp_feature->setViewerCount($each_feature[0]->view_count);
                     $temp_feature->setVideoUrl($dataArr[$i]["video_url"]);
+                    $temp_feature->setThumbnail($dataArr[$i]["thumbnail"]);
 
                     $em->persist($temp_feature);
                     $em->flush();
@@ -124,9 +125,12 @@ class FeatureController extends Controller
             if ($q != null || $q != "")  {
                 for ($j = 0; $j < count($stream_list); $j ++) {
                     $feature = $this->getUserById($stream_list[$j]->user_id);
-                    $video = $this->getVideoByUserId($stream_list[$j]->user_id);
+                    $stream = $this->getLiveStreamByGame($stream_list[$j]->game_name);
 
-                    $feature[0]->video_url = $video->url;
+                    $replacedStr = str_replace("{width}x{height}", "500x500", $stream->preview->template);
+
+                    $feature[0]->video_url = $stream->channel->url;
+                    $feature[0]->thumbnail = $replacedStr;
                     
                     if (strpos($feature[0]->display_name, $q) !== false || $feature[0]->id == $q) {
                         $feature_list[] = $feature[0];
@@ -135,9 +139,12 @@ class FeatureController extends Controller
             } else {
                 for ($j = 0; $j < count($stream_list); $j ++) {
                     $feature = $this->getUserById($stream_list[$j]->user_id);
-                    $video = $this->getVideoByUserId($stream_list[$j]->user_id);
+                    $stream = $this->getLiveStreamByGame($stream_list[$j]->game_name);
+                    
+                    $replacedStr = str_replace("{width}x{height}", "500x500", $stream->preview->template);
 
-                    $feature[0]->video_url = $video->url;
+                    $feature[0]->video_url = $stream->channel->url;
+                    $feature[0]->thumbnail = $replacedStr;
                     
                     $feature_list[] = $feature[0];
                 }
@@ -175,6 +182,34 @@ class FeatureController extends Controller
         $user = json_decode($result)->data;
 
         return $user;
+    }
+
+    private function getLiveStreamByGame($game) {
+        $url = 'https://api.twitch.tv/kraken/streams/?';
+        $headers = array(
+            // 'Content-Type: application/json',
+            'Accept: application/vnd.twitchtv.v5+json',
+            'Client-Id: jhch4uoxcoh2d4wc77joe05ff6q8vz'
+        );
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url.'game='.urlencode($game).'&sort=view');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        $body = '{}';
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($ch, CURLOPT_POSTFIELDS,$body);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        
+        $result = curl_exec($ch);
+        
+        if ($result === FALSE) {
+            die('Curl failed: ' . curl_error($ch));
+        }
+
+        $stream_list = json_decode($result)->streams;
+        
+        return $stream_list[0];
     }
 
     private function getVideoByUserId($id) {

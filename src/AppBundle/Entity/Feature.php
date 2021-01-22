@@ -85,6 +85,17 @@ class Feature
      */
     private $video_url;
 
+    /**
+     * @var string
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 25,
+     * )
+     * @ORM\Column(name="thumbnail", type="string", length=255))
+     */
+    private $thumbnail;
+
 
     public function __construct()
     {
@@ -234,6 +245,28 @@ class Feature
     public function getVideoUrl()
     {
         return $this->video_url;
+    }
+
+    /**
+     * Set thumbnail
+     *
+     * @param \string $video_url
+     */
+    public function setThumbnail($thumbnail)
+    {
+        $this->thumbnail = $thumbnail;
+
+        return $this;
+    }
+
+    /**
+     * Get thumbnail
+     *
+     * @return \string 
+     */
+    public function getThumbnail()
+    {
+        return $this->thumbnail;
     }
 
     public function __toString()

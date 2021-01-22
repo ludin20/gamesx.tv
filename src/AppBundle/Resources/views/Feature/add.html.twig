@@ -81,7 +81,7 @@
                             {% for feature in feature_list %}
                                 <tr>
                                     <th style="width: 2%">
-                                        <input type="checkbox" name="featureids[]" id="{{feature.id}},{{feature.video_url}}" value="{{loop.index}}">
+                                        <input type="checkbox" name="featureids[]" id="{{feature.id}},{{feature.video_url}},{{feature.thumbnail}}" value="{{loop.index}}">
                                     </th>
                                     <th style="width: 2%">
                                         #{{loop.index}}
@@ -122,11 +122,13 @@
                 var arr = val.split(",");
                 var id = arr[0];
                 var video_url = arr[1];
+                var thumbnail = arr[2];
 
                 var json = {
                     "value": value,
                     "id": id,
                     "video_url": video_url,
+                    "thumbnail": thumbnail
                 };
                 data.push(json);
             } else {
