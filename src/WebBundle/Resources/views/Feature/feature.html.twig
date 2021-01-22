@@ -1,9 +1,12 @@
 <a href="{{feature.videoUrl}}" alt="{{feature.name}}" class="poster {{(class is defined)? class : ""}}" >
 	<div>
 		<img width="170" height="255" src="{{feature.url}}" />
-		<img width="170" height="255" src="{{feature.thumbnail}}" />
+		<img width="170" height="255" src="{{feature.thumbnail}}" style="object-fit: cover; width: 300px !important; height: 200px !important" />
 		<div>
 			<span>{{feature.name}}</span>
+		</div>
+		<div style="padding-left: 195px;">
+			<span style="background: #9e1818 !important">LIVE</span>
 		</div>
 	</div>
 </a>

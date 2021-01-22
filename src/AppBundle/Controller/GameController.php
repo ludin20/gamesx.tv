@@ -77,11 +77,11 @@ class GameController extends Controller
 
                     $temp_game->setUrl($dataArr[$i]["thumbnail"]);
                     
-                    if (strlen(json_encode($dataArr[$i]["description"])) > 20) {
-                        $description = substr(json_encode($dataArr[$i]["description"]), 0, 20) . "...";
+                    if (strlen($dataArr[$i]["description"]) > 20) {
+                        $description = substr($dataArr[$i]["description"], 0, 20) . "...";
                         $temp_game->setDescription($description);
                     } else {
-                        $temp_game->setDescription(json_encode($dataArr[$i]["description"]));
+                        $temp_game->setDescription($dataArr[$i]["description"]);
                     }
                     
                     $temp_game->setLanguage($dataArr[$i]["language"]);
@@ -147,7 +147,7 @@ class GameController extends Controller
                         $game[0]->box_art_url = $replacedStr;
                         $game[0]->thumbnail = $replacedStr1;
                         $game[0]->viewer_count = $stream->channel->views;
-                        $game[0]->description = $stream->channel->description;
+                        $game[0]->description = $stream->channel->name;
                         $game[0]->language = $stream->channel->language;
                         $game[0]->video_url = $stream->channel->url;
                         $game_list[] = $game[0];
@@ -171,10 +171,10 @@ class GameController extends Controller
                     $game[0]->box_art_url = $replacedStr;
                     $game[0]->thumbnail = $replacedStr1;
                     $game[0]->viewer_count = $stream->channel->views;
-                    if (strlen($stream->channel->description) > 20) {
-                        $game[0]->description = substr($stream->channel->description, 0, 20) . "...";
+                    if (strlen($stream->channel->name) > 20) {
+                        $game[0]->description = substr($stream->channel->name, 0, 20) . "...";
                     } else {
-                        $game[0]->description = $stream->channel->description;    
+                        $game[0]->description = $stream->channel->name;    
                     }
                     
                     $game[0]->language = $stream->channel->language;

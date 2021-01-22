@@ -1,16 +1,17 @@
 <a href="{{game.videoUrl}}" alt="{{game.title}}" class="poster {{(class is defined)? class : ""}}" >
+	<div style="width: 190px">
+		<span style="background: #1e1e2163; color: white; font-size: 10px;">{{game.title}} : {{game.language}}</span>
+	</div>
 	<div>
-		<img width="170" height="255" src="{{game.url}}" />
-		<div>
+		<img width="170" height="255" src="{{game.url}}" style="object-fit: cover; width: 300px !important; height: 200px !important" />
+		<div style="padding-top: 25px">
 			<span style="background: #9e1818 !important">LIVE</span>
 		</div>
-		<div style="padding-top: 140px">
+		<div style="padding-top: 165px">
 			<span style="background: #1e1e2163 !important">{{game.viewerCount}}</span>
 		</div>
 	</div>
 	<div style="width: 190px">
 		<span style="background: #1e1e2163; color: white; font-size: 13px; white-space: break-spaces;">{{game.description}}</span>
-    	<br>
-		<span style="background: #1e1e2163; color: white; font-size: 10px;">{{game.title}} : {{game.language}}</span>
 	</div>
 </a>
