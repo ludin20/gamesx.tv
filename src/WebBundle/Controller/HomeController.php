@@ -252,10 +252,32 @@ class HomeController extends Controller
     }
     public function indexAction()
     {
+        $game_list = []; 
+        $channel_list = [];
+        $feature_list = [];
+
         $em = $this->getDoctrine()->getManager();
+
         $games=$em->getRepository('AppBundle:Game')->findAll();
+        foreach ($games as $game) {
+            $channel = $this->getChannelByQuery($game->getDescription());
+            if (count($channel) > 0 && $channel[0]->is_live)
+                $game_list[] = $channel;
+        }
+        
         $channels=$em->getRepository('AppBundle:Livechannel')->findAll();
+        foreach ($channels as $key => $channel) {
+            $channelQ = $this->getChannelByQuery($channel->getName());
+            if (count($channelQ) > 0 && $channelQ[0]->is_live)
+                $channel_list[] = $channelQ;
+        }
+
         $features=$em->getRepository('AppBundle:Feature')->findAll();
+        foreach ($features as $key => $feature) {
+            $channel = $this->getChannelByQuery($feature->getName());
+            if (count($channel) > 0 && $channel[0]->is_live)
+                $feature_list[] = $channel;
+        }
         
         if ($this->getUser()!=null) {
           $user = $em->getRepository("UserBundle:User")->findOneBy(array("id"=>$this->getUser()->getId()));
@@ -264,9 +286,9 @@ class HomeController extends Controller
         }
 
         return $this->render('WebBundle:Home:index.html.twig',array(
-            "games" => $games,
-            "channels"=>$channels,
-            "features"=>$features
+            "games" => $game_list,
+            "channels"=>$channel_list,
+            "features"=>$feature_list
         ));
     }
     public function headerAction($subtitle,$og_type,$og_image,$keywords,$og_description) {
@@ -291,5 +313,33 @@ class HomeController extends Controller
         $em = $this->getDoctrine()->getManager();
         $settings = $em->getRepository("AppBundle:Settings")->findOneBy(array(), array());
         return $this->render("WebBundle:Home:gplay.html.twig", array("settings" => $settings));
+    }
+
+    private function getChannelByQuery($query) {
+        $url = 'https://api.twitch.tv/helix/search/channels?';
+        $headers = array(
+            'Content-Type: application/json',
+            'Authorization: Bearer yyv0kg2yopv5x91lrwmyfttw0pmdk8',
+            'Client-Id: jhch4uoxcoh2d4wc77joe05ff6q8vz'
+        );
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url.'query='.urlencode($query).'live_only=true');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        $body = '{}';
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($ch, CURLOPT_POSTFIELDS,$body);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        
+        $result = curl_exec($ch);
+        
+        if ($result === FALSE) {
+            die('Curl failed: ' . curl_error($ch));
+        }
+
+        $channel = json_decode($result)->data;
+
+        return $channel;
     }
 }
