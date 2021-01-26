@@ -104,31 +104,14 @@ class GameController extends Controller
             $q = $request->query->get("q");
 
             $url = 'https://api.twitch.tv/helix/streams';
-
             $headers = array(
                 'Content-Type: application/json',
                 'Authorization: Bearer yyv0kg2yopv5x91lrwmyfttw0pmdk8',
                 'Client-Id: jhch4uoxcoh2d4wc77joe05ff6q8vz'
             );
 
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_HEADER, 0);
-            $body = '{}';
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-            curl_setopt($ch, CURLOPT_POSTFIELDS,$body);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            
-            $result = curl_exec($ch);
-            
-            if ($result === FALSE) {
-                die('Curl failed: ' . curl_error($ch));
-            }
+            $result_list = $this->curlRequestModule($url, $headers);
 
-            $result_list = json_decode($result);
-
-            $stream_list = [];
             for ($i = 0; $i < count($result_list->data); $i ++) {
                 if ($result_list->data[$i]->type == "live") {
                     $stream_list[] = $result_list->data[$i];
@@ -143,8 +126,10 @@ class GameController extends Controller
                     $video = $this->getVideoByGameId($stream_list[$j]->game_id);
 
                     if (strpos($game[0]->name, $q) !== false || $game[0]->id == $q) {
-                        $replacedStr = str_replace("{width}x{height}", "50x50", $stream->preview->template);
-                        $replacedStr1 = str_replace("{width}x{height}", "500x500", $stream->preview->template);
+                        // $replacedStr = str_replace("{width}x{height}", "50x50", $stream->preview->template);
+                        // $replacedStr1 = str_replace("{width}x{height}", "500x500", $stream->preview->template);
+                        $replacedStr = str_replace("{width}x{height}", "50x50", $stream_list[$j]->thumbnail_url);
+                        $replacedStr1 = str_replace("{width}x{height}", "500x500", $stream_list[$j]->thumbnail_url);
                         $game[0]->box_art_url = $replacedStr;
                         $game[0]->thumbnail = $replacedStr1;
                         $game[0]->viewer_count = $video->view_count;
@@ -167,8 +152,10 @@ class GameController extends Controller
                     $stream = $this->getLiveStreamByGame($game[0]->name);
                     $video = $this->getVideoByGameId($stream_list[$j]->game_id);
                            
-                    $replacedStr = str_replace("{width}x{height}", "50x50", $stream->preview->template);
-                    $replacedStr1 = str_replace("{width}x{height}", "500x500", $stream->preview->template);
+                    // $replacedStr = str_replace("{width}x{height}", "50x50", $stream->preview->template);
+                    // $replacedStr1 = str_replace("{width}x{height}", "500x500", $stream->preview->template);
+                    $replacedStr = str_replace("{width}x{height}", "50x50", $stream_list[$j]->thumbnail_url);
+                    $replacedStr1 = str_replace("{width}x{height}", "500x500", $stream_list[$j]->thumbnail_url);
 
                     $game[0]->box_art_url = $replacedStr;
                     $game[0]->thumbnail = $replacedStr1;
@@ -197,23 +184,10 @@ class GameController extends Controller
             'Authorization: Bearer yyv0kg2yopv5x91lrwmyfttw0pmdk8',
             'Client-Id: jhch4uoxcoh2d4wc77joe05ff6q8vz'
         );
+        $param = 'id='.$id;
+        $result = $this->curlRequestModule($url, $headers, $param);
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url.'id='.$id);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        $body = '{}';
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-        curl_setopt($ch, CURLOPT_POSTFIELDS,$body);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        
-        $result = curl_exec($ch);
-        
-        if ($result === FALSE) {
-            die('Curl failed: ' . curl_error($ch));
-        }
-
-        $game = json_decode($result)->data;
+        $game = $result->data;
 
         return $game;
     }
@@ -221,28 +195,15 @@ class GameController extends Controller
     private function getLiveStreamByGame($game) {
         $url = 'https://api.twitch.tv/kraken/streams/?';
         $headers = array(
-            // 'Content-Type: application/json',
             'Accept: application/vnd.twitchtv.v5+json',
             'Client-Id: jhch4uoxcoh2d4wc77joe05ff6q8vz'
         );
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url.'game='.urlencode($game).'&sort=view');
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        $body = '{}';
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-        curl_setopt($ch, CURLOPT_POSTFIELDS,$body);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        
-        $result = curl_exec($ch);
-        
-        if ($result === FALSE) {
-            die('Curl failed: ' . curl_error($ch));
-        }
+        $param = 'game='.urlencode($game).'&sort=view';
+        $result = $this->curlRequestModule($url, $headers, $param);
 
-        $stream_list = json_decode($result)->streams;
-        
+        $stream_list = $result->streams;
+
         return $stream_list[0];
     }
 
@@ -254,22 +215,12 @@ class GameController extends Controller
             'Client-Id: jhch4uoxcoh2d4wc77joe05ff6q8vz'
         );
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url.'game_id='.$id.'&sort=views');
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        $body = '{}';
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-        curl_setopt($ch, CURLOPT_POSTFIELDS,$body);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        
-        $result = curl_exec($ch);
-        
-        if ($result === FALSE) {
-            die('Curl failed: ' . curl_error($ch));
-        }
+        $param = 'game_id='.$id.'&sort=views';
 
-        $video = json_decode($result)->data;
+        $result = $this->curlRequestModule($url, $headers, $param);
+
+        $video = $result->data;
+
         return $video[0];
     }
 
@@ -284,6 +235,25 @@ class GameController extends Controller
         $x_display .= $x_parts[$x_count_parts - 1];
 
         return $x_display;
+    }
+
+    private function curlRequestModule($url, $headers, $param = '') {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url.$param);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        $body = '{}';
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($ch, CURLOPT_POSTFIELDS,$body);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        
+        $result = curl_exec($ch);
+
+        if ($result === FALSE) {
+            die('Curl failed: ' . curl_error($ch));
+        }
+
+        return json_decode($result);
     }
 
     public function deleteAction($id,Request $request){

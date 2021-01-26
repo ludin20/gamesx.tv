@@ -97,30 +97,12 @@ class LivechannelController extends Controller
             $q = $request->query->get("q");
 
             $url = 'https://api.twitch.tv/kraken/streams/';
-
             $headers = array(
-                // 'Content-Type: application/json',
-                // 'Authorization: Bearer yyv0kg2yopv5x91lrwmyfttw0pmdk8',
                 'Accept: application/vnd.twitchtv.v5+json',
                 'Client-Id: jhch4uoxcoh2d4wc77joe05ff6q8vz'
             );
-
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_HEADER, 0);
-            $body = '{}';
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-            curl_setopt($ch, CURLOPT_POSTFIELDS,$body);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             
-            $result = curl_exec($ch);
-            
-            if ($result === FALSE) {
-                die('Curl failed: ' . curl_error($ch));
-            }
-
-            $result_list = json_decode($result);
+            $result_list = $this->curlRequestModule($url, $headers);
 
             $stream_list = [];
             for ($i = 0; $i < count($result_list->streams); $i ++) {
@@ -159,8 +141,14 @@ class LivechannelController extends Controller
             'Client-Id: jhch4uoxcoh2d4wc77joe05ff6q8vz'
         );
 
+        $livechannel = $this->curlRequestModule($url, $headers, $id);
+
+        return $livechannel;
+    }
+
+    private function curlRequestModule($url, $headers, $param = '') {
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url.$id);
+        curl_setopt($ch, CURLOPT_URL, $url.$param);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_HEADER, 0);
         $body = '{}';
@@ -169,14 +157,12 @@ class LivechannelController extends Controller
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         
         $result = curl_exec($ch);
-        
+
         if ($result === FALSE) {
             die('Curl failed: ' . curl_error($ch));
         }
 
-        $livechannel = json_decode($result);
-
-        return $livechannel;
+        return json_decode($result);
     }
 
     public function deleteAction($id,Request $request){
