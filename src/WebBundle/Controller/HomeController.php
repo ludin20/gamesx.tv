@@ -261,22 +261,22 @@ class HomeController extends Controller
         $games=$em->getRepository('AppBundle:Game')->findAll();
         foreach ($games as $game) {
             $channel = $this->getChannelByQuery($game->getDescription());
-            if (count($channel) > 0 && $channel[0]->is_live)
-                $game_list[] = $channel;
+            if (count($channel) > 0)
+                $game_list[] = $game;
         }
-        
+
         $channels=$em->getRepository('AppBundle:Livechannel')->findAll();
         foreach ($channels as $key => $channel) {
             $channelQ = $this->getChannelByQuery($channel->getName());
-            if (count($channelQ) > 0 && $channelQ[0]->is_live)
-                $channel_list[] = $channelQ;
+            if (count($channelQ) > 0)
+                $channel_list[] = $channel;
         }
 
         $features=$em->getRepository('AppBundle:Feature')->findAll();
         foreach ($features as $key => $feature) {
             $channel = $this->getChannelByQuery($feature->getName());
-            if (count($channel) > 0 && $channel[0]->is_live)
-                $feature_list[] = $channel;
+            if (count($channel) > 0)
+                $feature_list[] = $feature;
         }
         
         if ($this->getUser()!=null) {
@@ -324,7 +324,7 @@ class HomeController extends Controller
         );
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url.'query='.urlencode($query).'live_only=true');
+        curl_setopt($ch, CURLOPT_URL, $url.'query='.urlencode($query).'&live_only=true');
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_HEADER, 0);
         $body = '{}';
