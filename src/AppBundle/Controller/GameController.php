@@ -103,11 +103,14 @@ class GameController extends Controller
         } else {
             $q = $request->query->get("q");
 
+            $authorization = $this->container->getParameter('authorization');
+            $client_id = $this->container->getParameter('client_id');
+
             $url = 'https://api.twitch.tv/helix/streams';
             $headers = array(
                 'Content-Type: application/json',
-                'Authorization: Bearer yyv0kg2yopv5x91lrwmyfttw0pmdk8',
-                'Client-Id: jhch4uoxcoh2d4wc77joe05ff6q8vz'
+                'Authorization:' . $authorization,
+                'Client-Id:' . $client_id
             );
 
             $result_list = $this->curlRequestModule($url, $headers);
@@ -172,18 +175,25 @@ class GameController extends Controller
                 }
             }
             curl_close($ch);
+
+            var_dump($game_list);
+            exit();
         }
 
         return $this->render("AppBundle:Game:add.html.twig",array("game_list" => $game_list, "form"=>$form->createView()));
     }
 
     private function getGameById($id) {
+        $authorization = $this->container->getParameter('authorization');
+        $client_id = $this->container->getParameter('client_id');
+
         $url = 'https://api.twitch.tv/helix/games?';
         $headers = array(
             'Content-Type: application/json',
-            'Authorization: Bearer yyv0kg2yopv5x91lrwmyfttw0pmdk8',
-            'Client-Id: jhch4uoxcoh2d4wc77joe05ff6q8vz'
+            'Authorization:' . $authorization,
+            'Client-Id:' . $client_id
         );
+
         $param = 'id='.$id;
         $result = $this->curlRequestModule($url, $headers, $param);
 
@@ -193,10 +203,12 @@ class GameController extends Controller
     }
 
     private function getLiveStreamByGame($game) {
+        $client_id = $this->container->getParameter('client_id');
+
         $url = 'https://api.twitch.tv/kraken/streams/?';
         $headers = array(
             'Accept: application/vnd.twitchtv.v5+json',
-            'Client-Id: jhch4uoxcoh2d4wc77joe05ff6q8vz'
+            'Client-Id:' . $client_id
         );
 
         $param = 'game='.urlencode($game).'&sort=view';
@@ -208,11 +220,14 @@ class GameController extends Controller
     }
 
     private function getVideoByGameId($id) {
+        $authorization = $this->container->getParameter('authorization');
+        $client_id = $this->container->getParameter('client_id');
+
         $url = 'https://api.twitch.tv/helix/videos?';
         $headers = array(
             'Content-Type: application/json',
-            'Authorization: Bearer yyv0kg2yopv5x91lrwmyfttw0pmdk8',
-            'Client-Id: jhch4uoxcoh2d4wc77joe05ff6q8vz'
+            'Authorization:' . $authorization,
+            'Client-Id:' . $client_id
         );
 
         $param = 'game_id='.$id.'&sort=views';

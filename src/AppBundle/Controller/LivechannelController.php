@@ -96,10 +96,12 @@ class LivechannelController extends Controller
 
             $q = $request->query->get("q");
 
+            $client_id = $this->container->getParameter('client_id');
+
             $url = 'https://api.twitch.tv/kraken/streams/';
             $headers = array(
                 'Accept: application/vnd.twitchtv.v5+json',
-                'Client-Id: jhch4uoxcoh2d4wc77joe05ff6q8vz'
+                'Client-Id:' . $client_id
             );
             
             $result_list = $this->curlRequestModule($url, $headers);
@@ -134,11 +136,14 @@ class LivechannelController extends Controller
     }
 
     private function getChannelById($id) {
+        $authorization = $this->container->getParameter('authorization');
+        $client_id = $this->container->getParameter('client_id');
+
         $url = 'https://api.twitch.tv/kraken/channels/';
         $headers = array(
             'Accept: application/vnd.twitchtv.v5+json',
-            'Authorization: Bearer yyv0kg2yopv5x91lrwmyfttw0pmdk8',
-            'Client-Id: jhch4uoxcoh2d4wc77joe05ff6q8vz'
+            'Authorization:' . $authorization,
+            'Client-Id:' . $client_id
         );
 
         $livechannel = $this->curlRequestModule($url, $headers, $id);

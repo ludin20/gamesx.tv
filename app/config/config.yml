@@ -18,6 +18,8 @@ parameters:
     files_directory_read: '/uploads/'
     files_directory_read_mp3: '/files/'
     token_app: "4F5A9C3D9A86FA54EACEDDD635185"
+    client_id: 'jhch4uoxcoh2d4wc77joe05ff6q8vz'
+    authorization: 'Bearer yyv0kg2yopv5x91lrwmyfttw0pmdk8'
 
 framework:
     session:

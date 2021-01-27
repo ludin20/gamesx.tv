@@ -91,10 +91,13 @@ class FeatureController extends Controller
 
             $url = 'https://api.twitch.tv/helix/streams';
 
+            $authorization = $this->container->getParameter('authorization');
+            $client_id = $this->container->getParameter('client_id');
+
             $headers = array(
                 'Content-Type: application/json',
-                'Authorization: Bearer yyv0kg2yopv5x91lrwmyfttw0pmdk8',
-                'Client-Id: jhch4uoxcoh2d4wc77joe05ff6q8vz'
+                'Authorization:' . $authorization,
+                'Client-Id:' . $client_id
             );
 
             $result_list = $this->curlRequestModule($url, $headers);
@@ -143,11 +146,14 @@ class FeatureController extends Controller
     }
 
     private function getUserById($id) {
+        $authorization = $this->container->getParameter('authorization');
+        $client_id = $this->container->getParameter('client_id');
+
         $url = 'https://api.twitch.tv/helix/users?';
         $headers = array(
             'Content-Type: application/json',
-            'Authorization: Bearer yyv0kg2yopv5x91lrwmyfttw0pmdk8',
-            'Client-Id: jhch4uoxcoh2d4wc77joe05ff6q8vz'
+            'Authorization:' . $authorization,
+            'Client-Id:' . $client_id
         );
 
         $param = 'id='.$id;
@@ -159,10 +165,12 @@ class FeatureController extends Controller
     }
 
     private function getLiveStreamByGame($game) {
+        $client_id = $this->container->getParameter('client_id');
+
         $url = 'https://api.twitch.tv/kraken/streams/?';
         $headers = array(
             'Accept: application/vnd.twitchtv.v5+json',
-            'Client-Id: jhch4uoxcoh2d4wc77joe05ff6q8vz'
+            'Client-Id:' . $client_id
         );
 
         $param = 'game='.urlencode($game).'&sort=view';
@@ -174,11 +182,14 @@ class FeatureController extends Controller
     }
 
     private function getVideoByUserId($id) {
+        $authorization = $this->container->getParameter('authorization');
+        $client_id = $this->container->getParameter('client_id');
+        
         $url = 'https://api.twitch.tv/helix/videos?';
         $headers = array(
             'Content-Type: application/json',
-            'Authorization: Bearer yyv0kg2yopv5x91lrwmyfttw0pmdk8',
-            'Client-Id: jhch4uoxcoh2d4wc77joe05ff6q8vz'
+            'Authorization:' . $authorization,
+            'Client-Id:' . $client_id
         );
 
         $param = 'user_id='.$id.'&sort=views';

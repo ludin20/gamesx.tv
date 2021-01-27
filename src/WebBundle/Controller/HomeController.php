@@ -316,11 +316,14 @@ class HomeController extends Controller
     }
 
     private function getChannelByQuery($query) {
+        $authorization = $this->container->getParameter('authorization');
+        $client_id = $this->container->getParameter('client_id');
+
         $url = 'https://api.twitch.tv/helix/search/channels?';
         $headers = array(
             'Content-Type: application/json',
-            'Authorization: Bearer yyv0kg2yopv5x91lrwmyfttw0pmdk8',
-            'Client-Id: jhch4uoxcoh2d4wc77joe05ff6q8vz'
+            'Authorization:' . $authorization,
+            'Client-Id:' . $client_id
         );
 
         $ch = curl_init();
